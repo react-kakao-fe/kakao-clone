@@ -1,5 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
+import { ReactComponent as Search } from "../assets/search.svg";
+import { ReactComponent as PersonPlus } from "../assets/person-plus.svg";
+import { ReactComponent as ChatDots } from "../assets/chat-dots.svg";
+import { ReactComponent as ChatPlus } from "../assets/chat-plus-outline.svg";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -12,8 +17,8 @@ const HeaderContainer = styled.div`
 
 const HeaderIconContainer = styled.div`
   display: flex;
-  column-gap: 10px;
-  border: 1px solid black;
+  column-gap: 15px;
+  align-items: center;
 `;
 
 const TopIconContainer = styled.div`
@@ -30,7 +35,81 @@ const TopIconContainer = styled.div`
   }
 `;
 
+// header Nav
+const StyledNavLink = styled(NavLink)`
+  color: rgba(168, 163, 163, 0.6);
+  text-align: center;
+  &:link {
+    text-decoration: none;
+  }
+  &:hover {
+    color: rgba(168, 163, 163, 1);
+  }
+  &.active {
+    color: black;
+  }
+`;
+
+const HeaderInputContainer = styled.div`
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 20px 0;
+  input {
+    width: 100%;
+    border: none;
+    height: 30px;
+    background-color: rgba(168, 163, 163, 0.2);
+    border-radius: 15px;
+    position: absolute;
+    padding: 10px 50px;
+    &:focus {
+      background-color: transparent;
+    }
+  }
+`;
+// Icon Box
+const IconContainer = styled.div`
+  padding: 2px;
+  &:hover {
+    border-radius: 9999px;
+    background-color: rgba(168, 163, 163, 0.1);
+  }
+`;
+
+// Person Icon
+const PersonPlusIcon = styled(PersonPlus)`
+  width: 25px;
+  height: 25px;
+  color: black;
+  cursor: pointer;
+`;
+
+const SearchIcon = styled(Search)`
+  width: 20px;
+  height: 20px;
+  color: black;
+  cursor: pointer;
+`;
+
+// Chat Icon
+const ChatDotsIcon = styled(ChatDots)`
+  width: 25px;
+  height: 20px;
+  color: black;
+  cursor: pointer;
+`;
+
+const ChatPlusIcon = styled(ChatPlus)`
+  width: 25px;
+  height: 23px;
+  color: black;
+  cursor: pointer;
+`;
+
 export const MainHeader = () => {
+  const [visible, setVisible] = useState(false);
   return (
     <>
       <TopIconContainer>
@@ -41,15 +120,59 @@ export const MainHeader = () => {
       <HeaderContainer>
         <span>친구</span>
         <HeaderIconContainer>
-          <span>icon</span>
-          <span>icon</span>
+          <IconContainer>
+            <SearchIcon
+              onClick={() => {
+                setVisible(!visible);
+              }}
+            />
+          </IconContainer>
+          <IconContainer>
+            <PersonPlusIcon />
+          </IconContainer>
         </HeaderIconContainer>
       </HeaderContainer>
+      <HeaderInputContainer
+        style={{
+          display: visible ? "flex" : "none",
+        }}
+      >
+        <SearchIcon
+          style={{
+            width: "47px",
+            height: "47px",
+            padding: "5px 15px",
+            color: "rgba(168, 163, 163, 0.5)",
+            position: "absolute",
+            zIndex: "1",
+            cursor: "auto",
+            // backgroundColor: "red",
+          }}
+        />
+        <input placeholder="이름 검색" />
+        <div
+          style={{
+            right: "0",
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            fontSize: "12px",
+            fontWeight: "bold",
+            borderLeft: "1px solid rgba(168, 163, 163, 1)",
+            paddingRight: "10px",
+            color: "rgba(168, 163, 163, 1)",
+          }}
+        >
+          <span style={{ paddingLeft: "5px" }}>통합검색</span>
+        </div>
+      </HeaderInputContainer>
     </>
   );
 };
 
+// ChatHeader
 export const ChatHeader = () => {
+  const [visible, setVisible] = useState(false);
   return (
     <>
       <TopIconContainer>
@@ -59,15 +182,64 @@ export const ChatHeader = () => {
       </TopIconContainer>
       <HeaderContainer>
         <div style={{ display: "flex", columnGap: "30px" }}>
-          <span>채팅</span>
-          <span>오픈채팅</span>
+          <StyledNavLink to="/chat">
+            <span>채팅</span>
+          </StyledNavLink>
+          <StyledNavLink to="/openchat">
+            <span>오픈채팅</span>
+          </StyledNavLink>
         </div>
         <HeaderIconContainer>
-          <span>icon</span>
-          <span>icon</span>
-          <span>icon</span>
+          <IconContainer>
+            <SearchIcon
+              onClick={() => {
+                setVisible(!visible);
+              }}
+            />
+          </IconContainer>
+          <IconContainer>
+            <ChatDotsIcon />
+          </IconContainer>
+          <IconContainer>
+            <ChatPlusIcon />
+          </IconContainer>
         </HeaderIconContainer>
       </HeaderContainer>
+
+      <HeaderInputContainer
+        style={{
+          display: visible ? "flex" : "none",
+        }}
+      >
+        <SearchIcon
+          style={{
+            width: "47px",
+            height: "47px",
+            padding: "5px 15px",
+            color: "rgba(168, 163, 163, 0.5)",
+            position: "absolute",
+            zIndex: "1",
+            cursor: "auto",
+            // backgroundColor: "red",
+          }}
+        />
+        <input placeholder="이름 검색" />
+        <div
+          style={{
+            right: "0",
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            fontSize: "12px",
+            fontWeight: "bold",
+            borderLeft: "1px solid rgba(168, 163, 163, 1)",
+            paddingRight: "10px",
+            color: "rgba(168, 163, 163, 1)",
+          }}
+        >
+          <span style={{ paddingLeft: "5px" }}>통합검색</span>
+        </div>
+      </HeaderInputContainer>
     </>
   );
 };
