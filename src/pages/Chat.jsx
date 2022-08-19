@@ -1,7 +1,40 @@
 import React from "react";
+import styled from "styled-components";
+import { ChatHeader } from "../components/Header";
+import Navigation from "../components/Navigation";
+
+const ChatContainer = styled.div`
+  width: 50vw;
+  height: 70vh;
+  display: flex;
+  box-shadow: 2px 2px 2px 2px #cacaca;
+`;
+
+const ChatHeaderContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ChatInlineWrapperr = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #5346cc;
+`;
 
 const Chat = () => {
-  return <div>chat</div>;
+  return (
+    <>
+      <ChatContainer>
+        <Navigation />
+        <ChatHeaderContainer>
+          <ChatHeader />
+          <ChatInlineWrapperr>chat</ChatInlineWrapperr>
+        </ChatHeaderContainer>
+      </ChatContainer>
+    </>
+  );
 };
 
 export default Chat;
