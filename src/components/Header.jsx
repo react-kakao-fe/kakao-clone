@@ -5,6 +5,7 @@ import { ReactComponent as Search } from "../assets/search.svg";
 import { ReactComponent as PersonPlus } from "../assets/person-plus.svg";
 import { ReactComponent as ChatDots } from "../assets/chat-dots.svg";
 import { ReactComponent as ChatPlus } from "../assets/chat-plus-outline.svg";
+import { ReactComponent as Setting } from "../assets/gear.svg";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -107,6 +108,45 @@ const ChatPlusIcon = styled(ChatPlus)`
   color: black;
   cursor: pointer;
 `;
+
+// login Icon
+const Settinghcon = styled(Setting)`
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+`;
+
+export const LoginHeader = () => {
+  return (
+    <>
+      <div
+        style={{
+          width: "100%",
+          marginTop: "-40px",
+          display: "flex",
+          justifyContent: "flex-end",
+          fontSize: "20px",
+          alignItems: "center",
+          color: "rgba(168, 163, 163, 1)",
+          paddingTop: "10px",
+        }}
+      >
+        <Settinghcon />
+        <div
+          style={{
+            borderLeft: "1px solid rgba(168, 163, 163, 0.4)",
+            margin: " 10px",
+
+            padding: "0 10px",
+          }}
+        >
+          <span style={{ marginRight: "10px", cursor: "pointer" }}>‒</span>
+          <span style={{ cursor: "pointer" }}>×</span>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export const MainHeader = () => {
   const [visible, setVisible] = useState(false);
