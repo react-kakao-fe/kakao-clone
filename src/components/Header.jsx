@@ -243,3 +243,22 @@ export const ChatHeader = () => {
     </>
   );
 };
+
+export const DetailHeader = () => {
+  return (
+    <>
+      <TopIconContainer>
+        <span>‒</span>
+        <span>ㅁ</span>
+        <span>×</span>
+      </TopIconContainer>
+      <HeaderContainer>
+        <div style={{ display: "flex", columnGap: "30px" }}>
+          <div>
+            <span>더보기</span>
+          </div>
+        </div>
+      </HeaderContainer>
+    </>
+  );
+};

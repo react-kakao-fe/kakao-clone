@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, NavLink, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { ReactComponent as Personfill } from "../assets/person-fill.svg";
 import { ReactComponent as Chatfill } from "../assets/chat-fill.svg";
@@ -11,7 +11,6 @@ import { ReactComponent as Setting } from "../assets/gear.svg";
 
 const NavCintainer = styled.div`
   height: 100%;
-  max-width: 25vw;
   width: 7vw;
   display: flex;
   flex-direction: column;
@@ -27,6 +26,7 @@ const StyledNavLink = styled(NavLink)`
   width: 100%;
   text-align: center;
   margin-top: 40px;
+  margin-bottom: -10px;
   &:link {
     text-decoration: none;
   }
@@ -141,7 +141,7 @@ export const Navigation = () => {
           <ChatIcon />
         </StyledNavLink>
 
-        <StyledNavLink to="/chat">
+        <StyledNavLink to="/detail">
           <ThreeDotsIcon />
         </StyledNavLink>
 

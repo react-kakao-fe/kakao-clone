@@ -5,6 +5,7 @@ import Chat from "../pages/Chat";
 import Login from "../pages/Login";
 import Main from "../pages/Main";
 import OpenChat from "../pages/OpenChat";
+import MoreDetail from "../pages/MoreDetail";
 
 const Router = () => {
   return (
@@ -20,6 +21,8 @@ const Router = () => {
         <Route path="/chat" element={<Chat />} />
         {/* 오픈채팅 */}
         <Route path="/openchat" element={<OpenChat />} />
+        {/* 더보기 */}
+        <Route path="/detail" element={<MoreDetail />} />
       </Routes>
     </BrowserRouter>
   );
