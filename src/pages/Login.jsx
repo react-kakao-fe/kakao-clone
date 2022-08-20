@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Chatfilled } from "../assets/chat-fill.svg";
+import { LoginHeader } from "../components/Header";
 
 const Login = () => {
   //input값 설정
@@ -32,6 +33,7 @@ const Login = () => {
   return (
     <div>
       <MainContainer>
+        <LoginHeader style={{ border: "4px solid black", color: "red" }} />
         <Chatfilled width="100" height="100" fill="#4A403A"></Chatfilled>
         <InputWarp>
           <Input
@@ -73,6 +75,7 @@ const MainContainer = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #fff323;
+  border-radius: 5px;
 `;
 
 //내용물 전체 크기설정

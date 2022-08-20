@@ -1,21 +1,40 @@
-import { React, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { ReactComponent as Chatfilled } from "../assets/chat-fill.svg";
+import { ChatHeader } from "../components/Header";
+import { Navigation } from "../components/Navigation";
 
-//전체 가운데 정렬용
-const MainContainer = styled.div`
+const ChatContainer = styled.div`
   width: 50vw;
   height: 70vh;
   display: flex;
+  box-shadow: 2px 2px 2px 2px #cacaca;
+`;
+
+const ChatHeaderContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
-  flex-wrap: warp;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff323;
+`;
+
+const ChatInlineWrapperr = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 15px;
 `;
 
 const Chat = () => {
-  return <MainContainer>chat</MainContainer>;
+  return (
+    <>
+      <ChatContainer>
+        <Navigation />
+        <ChatHeaderContainer>
+          <ChatHeader />
+          <ChatInlineWrapperr>채팅목록</ChatInlineWrapperr>
+        </ChatHeaderContainer>
+      </ChatContainer>
+    </>
+  );
 };
 
 export default Chat;
