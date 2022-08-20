@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ChatHeader } from "../components/Header";
-import Navigation from "../components/Navigation";
+import { Navigation } from "../components/Navigation";
 
 const ChatContainer = styled.div`
   width: 50vw;
@@ -20,7 +20,6 @@ const ChatHeaderContainer = styled.div`
 const ChatInlineWrapperr = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #5346cc;
 `;
 
 const Chat = () => {
@@ -30,7 +29,7 @@ const Chat = () => {
         <Navigation />
         <ChatHeaderContainer>
           <ChatHeader />
-          <ChatInlineWrapperr>chat</ChatInlineWrapperr>
+          <ChatInlineWrapperr>채팅목록</ChatInlineWrapperr>
         </ChatHeaderContainer>
       </ChatContainer>
     </>

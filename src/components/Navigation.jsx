@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { ReactComponent as Personfill } from "../assets/person-fill.svg";
 import { ReactComponent as Chatfill } from "../assets/chat-fill.svg";
@@ -128,74 +128,75 @@ const BellDarkContainera = styled.div`
   animation: ${DisplayNone} forwards 4s 1s;
 `;
 
-const Navigation = () => {
-  const [bell, setBell] = useState(false);
-
+export const Navigation = () => {
+  const [bell, setBell] = useState(true);
   return (
-    <NavCintainer>
-      <StyledNavLink to="/">
-        <PersonIcon />
-      </StyledNavLink>
+    <>
+      <NavCintainer>
+        <StyledNavLink to="/">
+          <PersonIcon />
+        </StyledNavLink>
 
-      <StyledNavLink to="/chat">
-        <ChatIcon />
-      </StyledNavLink>
+        <StyledNavLink to="/chat">
+          <ChatIcon />
+        </StyledNavLink>
 
-      <StyledNavLink to="/chat">
-        <ThreeDotsIcon />
-      </StyledNavLink>
+        <StyledNavLink to="/chat">
+          <ThreeDotsIcon />
+        </StyledNavLink>
 
-      {/* bottomIcon */}
-      <BottomIconContainer>
-        <BottomIconWrapper>
-          <EmojiSmileIcon />
-        </BottomIconWrapper>
+        {/* bottomIcon */}
+        <BottomIconContainer>
+          <BottomIconWrapper>
+            <EmojiSmileIcon />
+          </BottomIconWrapper>
 
-        <BottomIconWrapper>
-          {bell ? (
-            <>
-              <BellSlashicon
-                onClick={() => {
-                  setBell(!bell);
-                }}
-              />
+          <BottomIconWrapper>
+            {bell ? (
+              <BellIcon onClick={() => setBell(!bell)} />
+            ) : (
+              <BellSlashicon onClick={() => setBell(!bell)} />
+            )}
+          </BottomIconWrapper>
 
-              <BellDarkContainer>
-                <BellSlashicon
-                  style={{
-                    color: "white",
-                    width: "80px",
-                    height: "80px",
-                  }}
-                />
-              </BellDarkContainer>
-            </>
-          ) : (
-            <>
-              <BellIcon
-                onClick={() => {
-                  setBell(!bell);
-                }}
-              />
-              <BellDarkContainera>
-                <BellIcon
-                  style={{
-                    color: "white",
-                    width: "80px",
-                    height: "80px",
-                  }}
-                />
-              </BellDarkContainera>
-            </>
-          )}
-        </BottomIconWrapper>
-
-        <BottomIconWrapper>
-          <Settinghcon />
-        </BottomIconWrapper>
-      </BottomIconContainer>
-    </NavCintainer>
+          <BottomIconWrapper>
+            <Settinghcon />
+          </BottomIconWrapper>
+        </BottomIconContainer>
+        {/* <BottomIcon /> */}
+      </NavCintainer>
+    </>
   );
 };
 
-export default Navigation;
+export const BottomIcon = () => {
+  const [bell, setBell] = useState(false);
+
+  return (
+    <BottomIconContainer>
+      <BottomIconWrapper>
+        <EmojiSmileIcon />
+      </BottomIconWrapper>
+
+      <BottomIconWrapper>
+        <>
+          {bell ? (
+            <>
+              <BellSlashicon onClick={() => setBell(!bell)} />
+              <div>Hi</div>
+            </>
+          ) : (
+            <>
+              <BellIcon onClick={() => setBell(!bell)} />
+              <div>dd</div>
+            </>
+          )}
+        </>
+      </BottomIconWrapper>
+
+      <BottomIconWrapper>
+        <Settinghcon />
+      </BottomIconWrapper>
+    </BottomIconContainer>
+  );
+};

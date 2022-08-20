@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { MainHeader } from "../components/Header";
-import Navigation from "../components/Navigation";
+import { Navigation } from "../components/Navigation";
 
 const MainContainer = styled.div`
   width: 50vw;
@@ -20,7 +20,6 @@ const MainHeaderContainer = styled.div`
 const MainInlineWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #1d84df;
 `;
 
 const Main = () => {
@@ -30,7 +29,7 @@ const Main = () => {
         <Navigation />
         <MainHeaderContainer>
           <MainHeader />
-          <MainInlineWrapper>Main</MainInlineWrapper>
+          <MainInlineWrapper>유저정보 가져오기</MainInlineWrapper>
         </MainHeaderContainer>
       </MainContainer>
     </>
