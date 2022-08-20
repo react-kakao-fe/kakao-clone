@@ -10,13 +10,13 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         {/* 회원가입 */}
-        <Route path="#" element={<Register />} />
+        <Route path="register" element={<Register />} />
         {/* 로그인 */}
-        <Route path="#" element={<Login />} />
+        <Route path="login" element={<Login />} />
         {/* 메인 */}
         <Route path="/" element={<Main />} />
         {/* 채팅 */}
-        <Route path="#" element={<Chat />} />
+        <Route path="chat" element={<Chat />} />
       </Routes>
     </BrowserRouter>
   );
