@@ -34,7 +34,7 @@ const ImageContainer = styled.div`
 `;
 
 const Main = () => {
-  const userInfo = useSelector((state) => state.user.user[0]);
+  const userInfo = useSelector((state) => state);
   const dispatch = useDispatch();
   console.log(userInfo);
 

@@ -3,8 +3,8 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const BASE_URL = "http://13.209.17.224";
-const acessToken = localStorage.getItem("accessToken");
-const refreshToken = localStorage.getItem("refreshToken");
+const acessToken = localStorage.getItem("authorization");
+const refreshToken = localStorage.getItem("refresh-token");
 
 export const __getUserInfo = createAsyncThunk(
   "user/getUser",
@@ -12,8 +12,8 @@ export const __getUserInfo = createAsyncThunk(
     try {
       const response = await axios.get(`${BASE_URL}/api/listAll`, {
         headers: {
-          Authorization: acessToken,
-          "Refresh-Token": refreshToken,
+          authorization: acessToken,
+          "refresh-token": refreshToken,
         },
       });
       console.log(response);
@@ -46,14 +46,14 @@ export const __postPlusUser = createAsyncThunk(
 );
 
 const initialState = {
-  user: {},
+  user: [],
   userFriend: [],
   isLoading: false,
   error: null,
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: "myinfo",
   initialState,
   extraReducers: {
     [__getUserInfo.pending]: (state) => {

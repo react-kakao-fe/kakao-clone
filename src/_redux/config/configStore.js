@@ -1,9 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import user from "../modules/userinfo";
+import myinfo from "../modules/userinfo";
+import users from "../modules/login";
+import signup from "../modules/signup";
+import login from "../modules/login";
 
 const store = configureStore({
   reducer: {
-    user,
+    users: users,
+    signup: signup,
+    login: login,
+    myinfo,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
