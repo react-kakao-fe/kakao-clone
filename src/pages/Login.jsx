@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Chatfilled } from "../assets/chat-fill.svg";
-import { LoginHeader } from "../components/Header";
+import { LoginHeader } from "../components/header/LoginHeader";
 
 const Login = () => {
   //input값 설정

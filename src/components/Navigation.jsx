@@ -76,21 +76,25 @@ const BottomIconWrapper = styled.div`
 
 const EmojiSmileIcon = styled(EmojiSmile)`
   width: 25px;
+  cursor: pointer;
   height: 25px;
 `;
 
 const BellIcon = styled(Bell)`
   width: 25px;
+  cursor: pointer;
   height: 25px;
 `;
 
 const BellSlashicon = styled(BellSlash)`
   width: 25px;
+  cursor: pointer;
   height: 25px;
 `;
 
 const Settinghcon = styled(Setting)`
   width: 25px;
+  cursor: pointer;
   height: 25px;
 `;
 
@@ -105,7 +109,29 @@ const DisplayNone = keyframes`
   }
 `;
 
-// bell 가운데 뜨기
+const DisplayNone2 = keyframes`
+from{
+    opacity: 1;
+    display:flex;
+  }
+  to{
+    opacity: 0;
+    display:none;
+  }
+`;
+
+// bell 가운데 뜨는 animation
+const BellSlashDarkContainer = styled.div`
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  border-radius: 10px;
+  padding: 30px;
+  border: 1px solid black;
+  background-color: rgba(0, 0, 0, 0.7);
+  animation: ${DisplayNone} forwards 3s 0.5s;
+`;
+
 const BellDarkContainer = styled.div`
   position: absolute;
   top: 40%;
@@ -114,63 +140,71 @@ const BellDarkContainer = styled.div`
   padding: 30px;
   border: 1px solid black;
   background-color: rgba(0, 0, 0, 0.7);
-  animation: ${DisplayNone} forwards 4s 1s;
+  animation: ${DisplayNone2} forwards 3s 0.5s;
 `;
 
-const BellDarkContainera = styled.div`
+const SettingContainer = styled.div`
   position: absolute;
-  top: 40%;
-  left: 40%;
-  border-radius: 10px;
-  padding: 30px;
+  left: 80px;
+  background-color: white;
+  bottom: 100px;
   border: 1px solid black;
-  background-color: rgba(0, 0, 0, 0.7);
-  animation: ${DisplayNone} forwards 4s 1s;
+  width: 140px;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  color: black;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -1px;
+  padding: 10px;
 `;
 
 export const Navigation = () => {
-  const [bell, setBell] = useState(true);
   return (
     <>
       <NavCintainer>
-        <StyledNavLink to="/">
-          <PersonIcon />
-        </StyledNavLink>
+        {/* TopIcon */}
+        <TopIcon />
 
-        <StyledNavLink to="/chat">
-          <ChatIcon />
-        </StyledNavLink>
-
-        <StyledNavLink to="/detail">
-          <ThreeDotsIcon />
-        </StyledNavLink>
-
-        {/* bottomIcon */}
-        <BottomIconContainer>
-          <BottomIconWrapper>
-            <EmojiSmileIcon />
-          </BottomIconWrapper>
-
-          <BottomIconWrapper>
-            {bell ? (
-              <BellIcon onClick={() => setBell(!bell)} />
-            ) : (
-              <BellSlashicon onClick={() => setBell(!bell)} />
-            )}
-          </BottomIconWrapper>
-
-          <BottomIconWrapper>
-            <Settinghcon />
-          </BottomIconWrapper>
-        </BottomIconContainer>
-        {/* <BottomIcon /> */}
+        {/* BottomIcon */}
+        <BottomIcon />
       </NavCintainer>
     </>
   );
 };
 
+export const TopIcon = () => {
+  return (
+    <>
+      <StyledNavLink to="/">
+        <PersonIcon />
+      </StyledNavLink>
+
+      <StyledNavLink to="/chat">
+        <ChatIcon />
+      </StyledNavLink>
+
+      <StyledNavLink to="/detail">
+        <ThreeDotsIcon />
+      </StyledNavLink>
+    </>
+  );
+};
+
 export const BottomIcon = () => {
-  const [bell, setBell] = useState(false);
+  const [bell, setBell] = useState("");
+  const [setting, Setsetting] = useState(false);
+
+  const onChangeBell = () => {
+    setBell(!bell);
+  };
+
+  const onChangeSetting = () => {
+    Setsetting(!setting);
+  };
 
   return (
     <BottomIconContainer>
@@ -179,23 +213,83 @@ export const BottomIcon = () => {
       </BottomIconWrapper>
 
       <BottomIconWrapper>
-        <>
-          {bell ? (
-            <>
-              <BellSlashicon onClick={() => setBell(!bell)} />
-              <div>Hi</div>
-            </>
-          ) : (
-            <>
-              <BellIcon onClick={() => setBell(!bell)} />
-              <div>dd</div>
-            </>
-          )}
-        </>
+        {bell ? (
+          <>
+            <BellSlashicon onClick={onChangeBell} />
+
+            <BellSlashDarkContainer>
+              <BellSlashicon
+                style={{
+                  color: "white",
+                  width: "80px",
+                  height: "80px",
+                }}
+              />
+            </BellSlashDarkContainer>
+          </>
+        ) : (
+          <>
+            <BellIcon onClick={onChangeBell} />
+
+            <BellDarkContainer>
+              <BellIcon
+                style={{
+                  color: "white",
+                  width: "80px",
+                  height: "80px",
+                }}
+              />
+            </BellDarkContainer>
+          </>
+        )}
       </BottomIconWrapper>
 
       <BottomIconWrapper>
-        <Settinghcon />
+        {setting ? (
+          <>
+            <Settinghcon onClick={onChangeSetting} />
+            <SettingContainer>
+              <div>
+                <span>설정</span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <span>잠금모드</span>
+                <span>Ctrl+L</span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <span>로그아웃</span>
+                <span>Alt+N</span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <span>종료</span>
+                <span>Alt+X</span>
+              </div>
+            </SettingContainer>
+          </>
+        ) : (
+          <Settinghcon onClick={onChangeSetting} />
+        )}
       </BottomIconWrapper>
     </BottomIconContainer>
   );
