@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "../_redux/config/configStore";
 import Register from "../pages/Register";
 import Chat from "../pages/Chat";
 import Login from "../pages/Login";
@@ -9,22 +11,24 @@ import MoreDetail from "../pages/MoreDetail";
 
 const Router = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* 회원가입 */}
-        <Route path="/register" element={<Register />} />
-        {/* 로그인 */}
-        <Route path="/login" element={<Login />} />
-        {/* 메인 */}
-        <Route path="/" element={<Main />} />
-        {/* 채팅 */}
-        <Route path="/chat" element={<Chat />} />
-        {/* 오픈채팅 */}
-        <Route path="/openchat" element={<OpenChat />} />
-        {/* 더보기 */}
-        <Route path="/detail" element={<MoreDetail />} />
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          {/* 회원가입 */}
+          <Route path="/register" element={<Register />} />
+          {/* 로그인 */}
+          <Route path="/login" element={<Login />} />
+          {/* 메인 */}
+          <Route path="/" element={<Main />} />
+          {/* 채팅 */}
+          <Route path="/chat" element={<Chat />} />
+          {/* 오픈채팅 */}
+          <Route path="/openchat" element={<OpenChat />} />
+          {/* 더보기 */}
+          <Route path="/detail" element={<MoreDetail />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 };
 

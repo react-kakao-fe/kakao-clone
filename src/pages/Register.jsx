@@ -1,8 +1,14 @@
 import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import signup, { signUp } from "../_redux/modules/signup";
 import styled from "styled-components";
 import { ReactComponent as Xbutton } from "../assets/x-circle-fill.svg";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   //input값 설정
   const [username, setUsername] = useState("");
   const [pw, setPw] = useState("");
@@ -34,11 +40,11 @@ const Register = () => {
     setColor = "#eeee";
   }
 
-  //유효성 통과-> 전송하기
-  const submitHandler = () => {
+  // 유효성 통과-> 전송하기
+  const onClick = () => {
     if (pw === pwCheck) {
       if (isValidId && isValidpw && isValidnickname === true) {
-        //dispatch넣기
+        dispatch(signUp(userInfo));
       } else {
         alert("입력란을 확인해주세요");
       }
@@ -147,7 +153,7 @@ const Register = () => {
           </InputButton2>
         </InputContainer>
       </InputWarp>
-      <Button color={setColor} onClick={submitHandler}>
+      <Button color={setColor} onClick={onClick}>
         회원가입
       </Button>
     </MainContainer>
@@ -163,6 +169,14 @@ const MainContainer = styled.div`
   flex-wrap: warp;
   align-items: center;
   justify-content: center;
+  box-shadow: 2px 2px 2px 2px #cacaca;
+`;
+
+const MainHeaderContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 //내용물 전체 크기설정
@@ -234,6 +248,20 @@ const Button = styled.button`
   border: none;
   border-radius: 4px;
   background-color: ${(props) => props.color || "#eeee"};
+`;
+
+const TopIconContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 10px;
+  padding-right: 5px;
+  color: rgba(168, 163, 163, 0.8);
+  span {
+    &:hover {
+      color: black;
+      cursor: pointer;
+    }
+  }
 `;
 
 export default Register;

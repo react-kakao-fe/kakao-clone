@@ -1,9 +1,15 @@
 import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { ReactComponent as Chatfilled } from "../assets/chat-fill.svg";
 import { LoginHeader } from "../components/Header";
+import { login } from "../_redux/modules/login";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   //input값 설정
   const [username, setUsername] = useState("");
   const [pw, setPw] = useState("");
@@ -30,6 +36,12 @@ const Login = () => {
     setFontColor = "gray";
   }
 
+  const onClick = () => {
+    dispatch(login(userInfo));
+    setUsername("");
+    setPw("");
+  };
+
   return (
     <div>
       <MainContainer>
@@ -51,7 +63,7 @@ const Login = () => {
             borderT="1px solid #e5e5e5"
             onChange={(e) => setPw(e.target.value)}
           />
-          <Button fontColor={setFontColor} color={setColor}>
+          <Button fontColor={setFontColor} color={setColor} onClick={onClick}>
             로그인
           </Button>
         </InputWarp>
