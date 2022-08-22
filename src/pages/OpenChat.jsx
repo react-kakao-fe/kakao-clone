@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ChatHeader } from "../components/Header";
-import { Navigation } from "../components/Navigation";
+import { ChatHeader } from "../components/header/ChatHeader";
 import kakaoImg from "../assets/kakao.png";
 
 const OpenChatContainer = styled.div`
@@ -9,6 +8,7 @@ const OpenChatContainer = styled.div`
   height: 70vh;
   display: flex;
   box-shadow: 2px 2px 2px 2px #cacaca;
+  background-color: white;
 `;
 
 const OpenChatHeaderContainer = styled.div`
@@ -18,7 +18,7 @@ const OpenChatHeaderContainer = styled.div`
   flex-direction: column;
 `;
 
-const OpenChatInlineWrapperr = styled.div`
+const OpenChatInlineWrapper = styled.div`
   width: 100%;
   height: 100%;
   padding-top: 40px;
@@ -47,10 +47,9 @@ const OpenChat = () => {
   return (
     <>
       <OpenChatContainer>
-        <Navigation />
         <OpenChatHeaderContainer>
           <ChatHeader />
-          <OpenChatInlineWrapperr>
+          <OpenChatInlineWrapper>
             <ImageContainer>
               <KakaoImage />
             </ImageContainer>
@@ -71,7 +70,7 @@ const OpenChat = () => {
                 나중에 더 좋은 서비스로 찾아뵙겠습니다.
               </span>
             </div>
-          </OpenChatInlineWrapperr>
+          </OpenChatInlineWrapper>
         </OpenChatHeaderContainer>
       </OpenChatContainer>
     </>

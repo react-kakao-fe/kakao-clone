@@ -1,36 +1,24 @@
 import React from "react";
 import styled from "styled-components";
-import { ChatHeader } from "../components/Header";
-import { Navigation } from "../components/Navigation";
+import { ChatHeader } from "../components/header/ChatHeader";
 
 const ChatContainer = styled.div`
-  width: 50vw;
-  height: 70vh;
-  display: flex;
-  box-shadow: 2px 2px 2px 2px #cacaca;
+  width: 100%;
 `;
 
 const ChatHeaderContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ChatInlineWrapperr = styled.div`
-  width: 100%;
-  height: 100%;
   padding: 15px;
 `;
+
+const ChatInlineWrapperr = styled.div``;
 
 const Chat = () => {
   return (
     <>
       <ChatContainer>
-        <Navigation />
+        <ChatHeader />
         <ChatHeaderContainer>
-          <ChatHeader />
-          <ChatInlineWrapperr>채팅목록</ChatInlineWrapperr>
+          <ChatInlineWrapperr>ss</ChatInlineWrapperr>
         </ChatHeaderContainer>
       </ChatContainer>
     </>

@@ -19,7 +19,11 @@ export const login = createAsyncThunk(
             "refresh-token",
             response.headers["refresh-token"]
           );
+          if (response.data.success === true) {
+            window.location.replace("/");
+          }
         });
+
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -44,6 +48,8 @@ export const loginSlice = createSlice({
     [login.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.success = true;
+      state.user = payload;
+      console.log(payload);
     },
     [login.rejected]: (state, { payload }) => {
       state.loading = false;

@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { DetailHeader } from "../components/Header";
-import { Navigation } from "../components/Navigation";
+import { DetailHeader } from "../components/header/DetailHeader";
 import KakaoImage from "../assets/kakao2.png";
 
 const MoreDetailContainer = styled.div`
@@ -9,6 +8,7 @@ const MoreDetailContainer = styled.div`
   height: 70vh;
   display: flex;
   box-shadow: 2px 2px 2px 2px #cacaca;
+  background-color: white;
 `;
 
 const MoreDetailHeaderContainer = styled.div`
@@ -43,7 +43,6 @@ const MoreDetail = () => {
   return (
     <>
       <MoreDetailContainer>
-        <Navigation />
         <MoreDetailHeaderContainer>
           <DetailHeader />
           <ImageContainer>

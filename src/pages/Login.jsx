@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { ReactComponent as Chatfilled } from "../assets/chat-fill.svg";
-import { LoginHeader } from "../components/Header";
+import { LoginHeader } from "../components/header/LoginHeader";
 import { login } from "../_redux/modules/login";
 
 const Login = () => {
@@ -13,6 +13,10 @@ const Login = () => {
   //input값 설정
   const [username, setUsername] = useState("");
   const [pw, setPw] = useState("");
+
+  const handleRegister = () => {
+    navigate("/register");
+  };
 
   const userInfo = {
     username: username,
@@ -68,9 +72,11 @@ const Login = () => {
           </Button>
         </InputWarp>
         <TextBox>
-          <p>회원가입</p>
+          <p style={{ cursor: "pointer" }} onClick={handleRegister}>
+            회원가입
+          </p>
           <p>|</p>
-          <p>비밀번호 재설정</p>
+          <p style={{ cursor: "pointer" }}>비밀번호 재설정</p>
         </TextBox>
       </MainContainer>
     </div>
