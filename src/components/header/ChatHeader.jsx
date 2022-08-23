@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { ReactComponent as Search } from "../../assets/search.svg";
 import { ReactComponent as ChatDots } from "../../assets/chat-dots.svg";
 import { ReactComponent as ChatPlus } from "../../assets/chat-plus-outline.svg";
+import { __getPlusUser } from "../../_redux/modules/friend_info";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -148,6 +150,23 @@ const HeaderInputContainer = styled.div`
     }
   }
 `;
+
+//친구목록
+const FriendList = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  img {
+    border-radius: 10px;
+  }
+  p {
+    margin-left: 10px;
+    font-size: 13px;
+    font-weight: normal;
+  }
+`;
+
 // Icon Box
 const IconContainer = styled.div`
   padding: 2px;
@@ -182,10 +201,19 @@ const ChatPlusIcon = styled(ChatPlus)`
 export const ChatHeader = () => {
   const [visible, setVisible] = useState(false);
   const [modal, setModal] = useState(false);
+  const [serch, setSerch] = useState("");
+  const friendInfo = useSelector((state) => state.friend.userFriend);
 
   const handleModal = () => {
     setModal(!modal);
   };
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(__getPlusUser());
+  }, []);
+
   return (
     <>
       <TopIconContainer>
@@ -250,7 +278,12 @@ export const ChatHeader = () => {
                               // backgroundColor: "red",
                             }}
                           />
-                          <input placeholder="이름 검색" />
+                          <input
+                            placeholder="이름 검색"
+                            onChange={(e) => {
+                              setSerch(e.target.value);
+                            }}
+                          />
                         </HeaderChatPlusInputContainer>
                       </HeaderChatPlusBodyFormContainer>
                       <div
@@ -271,6 +304,24 @@ export const ChatHeader = () => {
                           친구
                         </span>
                       </div>
+                      {friendInfo
+                        .filter((val) => {
+                          if (serch === "") {
+                            return val;
+                          } else if (val.nickname.includes(serch)) {
+                            return val;
+                          }
+                        })
+                        .map((friend) => (
+                          <FriendList key={friend.id}>
+                            <img
+                              src={friend.imgUrl}
+                              width="30px"
+                              height="30px"
+                            />
+                            <p>{friend.nickname}</p>
+                          </FriendList>
+                        ))}
                     </HeaderChatPlusBodyContainer>
                   </HeaderChatPlusModal>
                 </HeaderChatPlusModalContainer>

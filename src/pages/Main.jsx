@@ -39,7 +39,7 @@ const Main = () => {
   const friendInfo = useSelector((state) => state.friend.userFriend);
   const dispatch = useDispatch();
 
-  console.log(friendInfo);
+  console.log(userInfo);
   useEffect(() => {
     dispatch(__getUserInfo());
   }, []);
@@ -56,7 +56,7 @@ const Main = () => {
           <MainInlineWrapper>
             <ImageContainer>
               <img
-                src={userInfo && userInfo.imageUrl}
+                src={userInfo && userInfo.imgUrl}
                 alt=""
                 style={{ width: "100%", height: "100%" }}
               />
