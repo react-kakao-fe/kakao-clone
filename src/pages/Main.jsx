@@ -11,7 +11,6 @@ const Main = () => {
   const friendInfo = useSelector((state) => state.friend.userFriend);
   const dispatch = useDispatch();
 
-  console.log(friendInfo);
   useEffect(() => {
     dispatch(__getUserInfo());
   }, []);
@@ -182,9 +181,11 @@ const Main = () => {
           <MainInlineWrapper>
             <ImageContainer>
               <img
-                src={userInfo && userInfo.imageUrl}
+                src={userInfo && userInfo.imgUrl}
                 alt=""
-                style={{ width: "100%", height: "100%" }}
+                width="30px"
+                height="30px"
+                style={{ borderRadius: "10px" }}
               />
             </ImageContainer>
             <ImageTitleContainer>
@@ -212,12 +213,14 @@ const Main = () => {
               {searchFriendName &&
                 searchFriendName.map((nicknames) => {
                   return (
-                    <MainInlineWrapper>
+                    <MainInlineWrapper key={nicknames.id}>
                       <ImageContainer>
                         <img
-                          src={nicknames.imageUrl}
+                          src={nicknames.imgUrl}
                           alt=""
-                          style={{ width: "100%", height: "100%" }}
+                          width="30px"
+                          height="30px"
+                          style={{ borderRadius: "10px" }}
                         />
                       </ImageContainer>
                       <ImageTitleContainer>
@@ -432,6 +435,7 @@ const ImageContainer = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
+  border-radius: 10px;
 `;
 
 export default Main;

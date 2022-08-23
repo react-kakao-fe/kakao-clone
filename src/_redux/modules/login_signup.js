@@ -14,7 +14,13 @@ export const signUp = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     console.log(payload);
     try {
-      const response = await axios.post("/api/members/signup", payload);
+      const response = await axios.post("/api/members/signup", {
+        username: payload.username,
+        nickname: payload.nickname,
+        password: payload.password,
+        imgUrl:
+          "https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049",
+      });
       console.log(response);
       return response.data;
     } catch (error) {

@@ -172,13 +172,6 @@ const MainContainer = styled.div`
   box-shadow: 2px 2px 2px 2px #cacaca;
 `;
 
-const MainHeaderContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
 //내용물 전체 크기설정
 const InputWarp = styled.div`
   width: 40%;
@@ -248,20 +241,6 @@ const Button = styled.button`
   border: none;
   border-radius: 4px;
   background-color: ${(props) => props.color || "#eeee"};
-`;
-
-const TopIconContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  column-gap: 10px;
-  padding-right: 5px;
-  color: rgba(168, 163, 163, 0.8);
-  span {
-    &:hover {
-      color: black;
-      cursor: pointer;
-    }
-  }
 `;
 
 export default Register;
