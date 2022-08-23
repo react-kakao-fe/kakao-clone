@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { ReactComponent as Chatfilled } from "../assets/chat-fill.svg";
 import { LoginHeader } from "../components/header/LoginHeader";
-import { login } from "../_redux/modules/login";
+import { login } from "../_redux/modules/login_signup";
 
 const Login = () => {
   const navigate = useNavigate();

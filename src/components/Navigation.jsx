@@ -130,6 +130,7 @@ const BellSlashDarkContainer = styled.div`
   border: 1px solid black;
   background-color: rgba(0, 0, 0, 0.7);
   animation: ${DisplayNone} forwards 3s 0.5s;
+  display: ${(props) => props.display || "none"};
 `;
 
 const BellDarkContainer = styled.div`
@@ -141,6 +142,7 @@ const BellDarkContainer = styled.div`
   border: 1px solid black;
   background-color: rgba(0, 0, 0, 0.7);
   animation: ${DisplayNone2} forwards 3s 0.5s;
+  display: ${(props) => props.display || "none"};
 `;
 
 const SettingContainer = styled.div`
@@ -195,7 +197,8 @@ export const TopIcon = () => {
 };
 
 export const BottomIcon = () => {
-  const [bell, setBell] = useState(false);
+  const [bell, setBell] = useState("");
+  const [display, setDisplay] = useState("");
   const [setting, Setsetting] = useState(false);
 
   useEffect(() => {
@@ -207,6 +210,7 @@ export const BottomIcon = () => {
 
   const onChangeBell = () => {
     setBell(!bell);
+    setDisplay("block");
   };
 
   const onChangeSetting = () => {
@@ -224,7 +228,7 @@ export const BottomIcon = () => {
           <>
             <BellSlashicon onClick={onChangeBell} />
 
-            <BellSlashDarkContainer>
+            <BellSlashDarkContainer display={display}>
               <BellSlashicon
                 style={{
                   color: "white",
@@ -238,7 +242,7 @@ export const BottomIcon = () => {
           <>
             <BellIcon onClick={onChangeBell} />
 
-            <BellDarkContainer>
+            <BellDarkContainer display={display}>
               <BellIcon
                 style={{
                   color: "white",

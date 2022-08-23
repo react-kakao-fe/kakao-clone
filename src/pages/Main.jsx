@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { MainHeader } from "../components/header/MainHeader";
-import { __getUserInfo } from "../_redux/modules/userinfo";
-import friend, { __getPlusUser } from "../_redux/modules/friend";
+import { __getUserInfo } from "../_redux/modules/user_info";
+import { __getPlusUser } from "../_redux/modules/friend_info";
 
 const MainContainer = styled.div`
   width: 100%;

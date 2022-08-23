@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as Search } from "../../assets/search.svg";
 import { ReactComponent as PersonPlus } from "../../assets/person-plus.svg";
 import { useDispatch } from "react-redux";
-import { __postPlusUser } from "../../_redux/modules/friend";
+import { __postPlusUser } from "../../_redux/modules/friend_info";
 
 const HeaderContainer = styled.div`
   width: 100%;

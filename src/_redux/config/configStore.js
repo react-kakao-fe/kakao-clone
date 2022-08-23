@@ -1,15 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import myinfo from "../modules/userinfo";
-import users from "../modules/login";
-import signup from "../modules/signup";
-import login from "../modules/login";
-import friend from "../modules/friend";
+import myinfo from "../modules/user_info";
+import friend from "../modules/friend_info";
+import { signUp, login } from "../modules/login_signup";
 
 const store = configureStore({
   reducer: {
-    users: users,
-    signup: signup,
-    login: login,
+    signUp,
+    login,
     myinfo,
     friend,
   },

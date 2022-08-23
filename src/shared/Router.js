@@ -7,24 +7,63 @@ import Main from "../pages/Main";
 import OpenChat from "../pages/OpenChat";
 import MoreDetail from "../pages/MoreDetail";
 import Home from "../pages/Home";
+import PrivateRoute from "./PrivateRoute";
 
 const Router = () => {
+  const access = localStorage.getItem("authorization");
+  const refresh = localStorage.getItem("refresh-token");
+
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<Home />}>
           {/* 메인 */}
-          <Route path="/" element={<Main />} />
+          <Route
+            path="/"
+            element={
+              <PrivateRoute
+                access={access}
+                refresh={refresh}
+                component={<Main />}
+              />
+            }
+          />
           {/* 채팅 */}
-          <Route path="chat" element={<Chat />} />
+          <Route
+            path="chat"
+            element={
+              <PrivateRoute
+                access={access}
+                refresh={refresh}
+                component={<Chat />}
+              />
+            }
+          />
           {/* 오픈채팅 */}
-          <Route path="openchat" element={<OpenChat />} />
+          <Route
+            path="openchat"
+            element={
+              <PrivateRoute
+                access={access}
+                refresh={refresh}
+                component={<OpenChat />}
+              />
+            }
+          />
           {/* 더보기 */}
-          <Route path="detail" element={<MoreDetail />} />
+          <Route
+            path="detail"
+            element={
+              <PrivateRoute
+                access={access}
+                refresh={refresh}
+                component={<MoreDetail />}
+              />
+            }
+          />
         </Route>
         {/* 회원가입 */}
         <Route path="/register" element={<Register />} />
-
         {/* 로그인 */}
         <Route path="/login" element={<Login />} />
       </Routes>
