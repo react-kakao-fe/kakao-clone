@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import signup, { signUp } from "../_redux/modules/signup";
+import { signUp } from "../_redux/modules/login_signup";
 import styled from "styled-components";
 import { ReactComponent as Xbutton } from "../assets/x-circle-fill.svg";
 

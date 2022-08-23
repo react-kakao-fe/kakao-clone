@@ -2,7 +2,49 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 axios.defaults.baseURL = "http://13.209.17.224";
+const initialState = {
+  user: [],
+  isLoading: false,
+  error: null,
+};
 
+//회원가입
+export const signUp = createAsyncThunk(
+  "users/signup",
+  async (payload, { rejectWithValue }) => {
+    console.log(payload);
+    try {
+      const response = await axios.post("/api/members/signup", payload);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const signUpSlice = createSlice({
+  name: "signUp",
+  initialState,
+  reducers: {},
+  extraReducers: {
+    [signUp.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [signUp.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+    },
+    [signUp.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+  },
+});
+
+//로그인
 export const login = createAsyncThunk(
   "users/login",
   async (payload, thunkAPI) => {
@@ -30,11 +72,6 @@ export const login = createAsyncThunk(
     }
   }
 );
-const initialState = {
-  user: [],
-  isLoading: false,
-  error: null,
-};
 
 export const loginSlice = createSlice({
   name: "login",
@@ -58,5 +95,4 @@ export const loginSlice = createSlice({
   },
 });
 
-export const {} = loginSlice.actions;
-export default loginSlice.reducer;
+export default { signUpSlice, loginSlice }.reducer;
