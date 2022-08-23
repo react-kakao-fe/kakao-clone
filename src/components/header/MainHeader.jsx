@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as Search } from "../../assets/search.svg";
 import { ReactComponent as PersonPlus } from "../../assets/person-plus.svg";
 import { useDispatch } from "react-redux";
-import { __postPlusUser } from "../../_redux/modules/userinfo";
+import { __postPlusUser } from "../../_redux/modules/friend";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -165,7 +165,7 @@ const SearchIcon = styled(Search)`
 export const MainHeader = () => {
   const [visible, setVisible] = useState(false);
   const [modal, setModal] = useState(false);
-  const [userId, setUserId] = useState("");
+  const [userName, setUserName] = useState("");
   const dispatch = useDispatch();
 
   const handleModal = () => {
@@ -177,7 +177,7 @@ export const MainHeader = () => {
   };
 
   const plusUserId = () => {
-    dispatch(__postPlusUser(userId));
+    dispatch(__postPlusUser(userName));
   };
 
   const handleFormData = (e) => {
@@ -233,7 +233,8 @@ export const MainHeader = () => {
                           <input
                             type="text"
                             placeholder="친구 카카오톡 ID"
-                            onChange={(e) => setUserId(e.target.value)}
+                            maxLength="20"
+                            onChange={(e) => setUserName(e.target.value)}
                           />
                           <span
                             style={{
@@ -242,7 +243,7 @@ export const MainHeader = () => {
                               color: "rgba(168, 163, 163, 0.6)",
                             }}
                           >
-                            {userId.length}/20
+                            {userName.length}/20
                           </span>
                         </HeaderPlusForm>
                       </HeaderPlusBodyFormContainer>

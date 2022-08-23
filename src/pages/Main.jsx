@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { MainHeader } from "../components/header/MainHeader";
 import { __getUserInfo } from "../_redux/modules/userinfo";
+import friend, { __getPlusUser } from "../_redux/modules/friend";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -34,12 +35,17 @@ const ImageContainer = styled.div`
 `;
 
 const Main = () => {
-  const userInfo = useSelector((state) => state);
+  const userInfo = useSelector((state) => state.myinfo.user.data);
+  const friendInfo = useSelector((state) => state.friend.userFriend);
   const dispatch = useDispatch();
-  console.log(userInfo);
 
+  console.log(friendInfo);
   useEffect(() => {
     dispatch(__getUserInfo());
+  }, []);
+
+  useEffect(() => {
+    dispatch(__getPlusUser());
   }, []);
 
   return (
@@ -48,18 +54,46 @@ const Main = () => {
         <MainHeader />
         <MainInlineContainer>
           <MainInlineWrapper>
-            {/* <ImageContainer>
+            <ImageContainer>
               <img
-                src={userInfo.imageUrl}
+                src={userInfo && userInfo.imageUrl}
                 alt=""
                 style={{ width: "100%", height: "100%" }}
               />
-            </ImageContainer> */}
-            {/* <ImageTitleContainer>
-              <span>{userInfo.username}</span>
-              <span>{userInfo.nickname}</span>
-            </ImageTitleContainer> */}
+            </ImageContainer>
+            <ImageTitleContainer>
+              <span style={{ fontWeight: "bold" }}>
+                {userInfo && userInfo.username}
+              </span>
+              <span>{userInfo && userInfo.nickname}</span>
+            </ImageTitleContainer>
           </MainInlineWrapper>
+          <div
+            style={{
+              color: "black",
+              width: "100%",
+              height: "100%",
+              border: "1px solid black",
+            }}
+          >
+            {friendInfo &&
+              friendInfo.map((friend) => {
+                return (
+                  <div
+                    style={{
+                      color: "black",
+                      width: "100%",
+                      height: "100%",
+                      border: "1px solid black",
+                    }}
+                    key={friend.id}
+                  >
+                    <span style={{ color: "black" }}>{friend.nickname}</span>
+                    {/* <span>{friend.imgUrl}</span> */}
+                  </div>
+                );
+              })}
+          </div>
         </MainInlineContainer>
       </MainContainer>
     </>

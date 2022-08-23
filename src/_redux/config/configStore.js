@@ -3,6 +3,7 @@ import myinfo from "../modules/userinfo";
 import users from "../modules/login";
 import signup from "../modules/signup";
 import login from "../modules/login";
+import friend from "../modules/friend";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     signup: signup,
     login: login,
     myinfo,
+    friend,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
