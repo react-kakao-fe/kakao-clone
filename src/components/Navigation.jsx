@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { ReactComponent as Personfill } from "../assets/person-fill.svg";
@@ -201,6 +201,13 @@ export const BottomIcon = () => {
   const [display, setDisplay] = useState("");
   const [setting, Setsetting] = useState(false);
 
+  useEffect(() => {
+    <>
+      <BellDarkContainer style={{ display: "none", opacity: "0" }} />
+      <BellSlashDarkContainer style={{ display: "none", opacity: "0" }} />
+    </>;
+  }, []);
+
   const onChangeBell = () => {
     setBell(!bell);
     setDisplay("block");
@@ -249,9 +256,9 @@ export const BottomIcon = () => {
       </BottomIconWrapper>
 
       <BottomIconWrapper>
-        {setting ? (
+        <Settinghcon onClick={onChangeSetting} />
+        {setting && (
           <>
-            <Settinghcon onClick={onChangeSetting} />
             <SettingContainer>
               <div>
                 <span>설정</span>
@@ -291,8 +298,6 @@ export const BottomIcon = () => {
               </div>
             </SettingContainer>
           </>
-        ) : (
-          <Settinghcon onClick={onChangeSetting} />
         )}
       </BottomIconWrapper>
     </BottomIconContainer>
