@@ -4,6 +4,8 @@ import axios from "axios";
 const acessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const initialState = {
   chat: [],
   isLoading: false,
@@ -14,13 +16,10 @@ const initialState = {
 export const addChatroom = createAsyncThunk(
   "post/chatroom",
   async (payload, { rejectWithValue }) => {
-    console.log(payload);
     try {
       const response = await axios.post(
-        `http://3.39.237.124/api/chatRooms/friend/${payload}`,
-        {
-          chatRoomName: payload,
-        },
+        `${BASE_URL}/api/chatRooms/friend/${payload}`,
+        payload,
         {
           headers: {
             contentType: "application/json",
@@ -31,8 +30,25 @@ export const addChatroom = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const __getChatRoom = createAsyncThunk(
+  "get/chatroom",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/chatRooms`, {
+        headers: {
+          authorization: acessToken,
+          "refresh-token": refreshToken,
+        },
+      });
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.fulfillWithValue(error);
     }
   }
 );
@@ -52,6 +68,12 @@ export const chatSlice = createSlice({
     },
     [addChatroom.rejected]: (state, { payload }) => {
       state.loading = false;
+      state.error = payload;
+    },
+
+    [__getChatRoom.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.chat = payload;
       state.error = payload;
     },
   },

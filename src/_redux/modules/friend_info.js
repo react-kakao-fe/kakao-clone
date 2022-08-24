@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-const BASE_URL = "http://3.39.237.124";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 const acessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 

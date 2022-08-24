@@ -1,5 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { __getChatRoom } from "../_redux/modules/chat";
+
+function Chatlists(searchVal) {
+  const dispatch = useDispatch();
+  const chatRoomList = useSelector((state) => state.chat.chat);
+
+  console.log(chatRoomList);
+
+  const searchChatName =
+    chatRoomList &&
+    chatRoomList.filter((chat) => {
+      return chat.chatRoomName.toLowerCase().includes(searchVal.toLowerCase());
+    });
+
+  useEffect(() => {
+    dispatch(__getChatRoom());
+  }, []);
+
+  return (
+    <>
+      <ChatWrap>
+        {searchChatName &&
+          searchChatName.map((list) => {
+            return (
+              <div key={list.id}>
+                <ChatContainer>
+                  <img
+                    alt=""
+                    src="https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049"
+                  />
+                  <ChatBox>
+                    <span>{list.chatRoomName}</span>
+                    {/* <span>마지막 채팅내용</span> */}
+                  </ChatBox>
+                </ChatContainer>
+                <ChatTimeBox>{/* <span>채팅시간</span> */}</ChatTimeBox>
+              </div>
+            );
+          })}
+      </ChatWrap>
+    </>
+  );
+}
 
 const ChatWrap = styled.div`
   width: 100%;
@@ -11,7 +55,7 @@ const ChatWrap = styled.div`
 `;
 
 const ChatContainer = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   align-items: center;
   img {
@@ -24,7 +68,7 @@ const ChatContainer = styled.div`
 const ChatBox = styled.div`
   margin-left: 10px;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   span {
     font-size: 14px;
   }
@@ -39,36 +83,5 @@ const ChatTimeBox = styled.div`
     font-size: 14px;
   }
 `;
-
-function Chatlists() {
-  return (
-    <>
-      <ChatWrap>
-        <ChatContainer>
-          <img src="https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049" />
-          <ChatBox>
-            <p>참여자 이름</p>
-            <span>마지막 채팅내용</span>
-          </ChatBox>
-        </ChatContainer>
-        <ChatTimeBox>
-          <span>채팅시간</span>
-        </ChatTimeBox>
-      </ChatWrap>
-      <ChatWrap>
-        <ChatContainer>
-          <img src="https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049" />
-          <ChatBox>
-            <p>참여자 이름</p>
-            <span>마지막 채팅내용</span>
-          </ChatBox>
-        </ChatContainer>
-        <ChatTimeBox>
-          <span>채팅시간</span>
-        </ChatTimeBox>
-      </ChatWrap>
-    </>
-  );
-}
 
 export default Chatlists;
