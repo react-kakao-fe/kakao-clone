@@ -258,7 +258,7 @@ const Main = () => {
                       key={nicknames.id}
                       onClick={(e) => {
                         dispatch(addChatroom(nicknames.id));
-                        // navigate(`chatroom/${nicknames.id}`);
+                        navigate(`chatroom/${nicknames.id}`);
                         // handleDouble(e);
                       }}
                     >

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://3.39.237.124";
+axios.defaults.baseURL = "http://13.209.17.224";
 const initialState = {
   user: [],
   isLoading: false,
@@ -14,16 +14,13 @@ export const signUp = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     console.log(payload);
     try {
-      const response = await axios.post(
-        "http://3.39.237.124/api/members/signup",
-        {
-          username: payload.username,
-          nickname: payload.nickname,
-          password: payload.password,
-          imgUrl:
-            "https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049",
-        }
-      );
+      const response = await axios.post("/api/members/signup", {
+        username: payload.username,
+        nickname: payload.nickname,
+        password: payload.password,
+        imgUrl:
+          "https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049",
+      });
       console.log(response);
       window.location.replace("/login");
       return response.data;
@@ -60,7 +57,7 @@ export const login = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .post("http://3.39.237.124/api/members/login", payload)
+        .post("http://13.209.17.224/api/members/login", payload)
         .then((response) => {
           console.log(response);
           window.localStorage.setItem(
