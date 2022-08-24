@@ -7,6 +7,7 @@ import Main from "../pages/Main";
 import OpenChat from "../pages/OpenChat";
 import MoreDetail from "../pages/MoreDetail";
 import Home from "../pages/Home";
+import ChatRoom from "../pages/ChatRoom";
 import PrivateRoute from "./PrivateRoute";
 
 const Router = () => {
@@ -39,6 +40,18 @@ const Router = () => {
               />
             }
           />
+          {/* 채팅방 */}
+          <Route
+            path="chatroom/:id"
+            element={
+              <PrivateRoute
+                access={access}
+                refresh={refresh}
+                component={<ChatRoom />}
+              />
+            }
+          />
+
           {/* 오픈채팅 */}
           <Route
             path="openchat"
