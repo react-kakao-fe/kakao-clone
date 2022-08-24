@@ -4,6 +4,7 @@ import { ReactComponent as Search } from "../assets/search.svg";
 import { ReactComponent as ChatDots } from "../assets/chat-dots.svg";
 import { ReactComponent as ChatPlus } from "../assets/chat-plus-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
+import ChatList from "../components/ChatList";
 import { __getPlusUser } from "../_redux/modules/friend_info";
 import { NavLink } from "react-router-dom";
 import _ from "lodash";
@@ -190,7 +191,9 @@ const Chat = () => {
         </>
         {/* ChatBody */}
         <ChatHeaderContainer>
-          <ChatInlineWrapperr>채팅리스트</ChatInlineWrapperr>
+          <ChatInlineWrapperr>
+            <ChatList />
+          </ChatInlineWrapperr>
         </ChatHeaderContainer>
       </ChatContainer>
     </>

@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { __getUserInfo } from "../_redux/modules/user_info";
 import { __getPlusUser, __postPlusUser } from "../_redux/modules/friend_info";
+import { addChatroom } from "../_redux/modules/chat";
 import { ReactComponent as Search } from "../assets/search.svg";
 import { ReactComponent as PersonPlus } from "../assets/person-plus.svg";
 import _ from "lodash";
+import { useNavigate } from "react-router-dom";
 
 const Main = () => {
   const [visible, setVisible] = useState(false);
@@ -18,6 +20,7 @@ const Main = () => {
   const userInfo = useSelector((state) => state.myinfo.user.data);
   const friendInfo = useSelector((state) => state.friend.userFriend);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(__getUserInfo());
@@ -253,7 +256,11 @@ const Main = () => {
                   return (
                     <MainInlineWrapper
                       key={nicknames.id}
-                      onClick={handleDouble}
+                      onClick={(e) => {
+                        dispatch(addChatroom(nicknames.id));
+                        // navigate(`chatroom/${nicknames.id}`);
+                        // handleDouble(e);
+                      }}
                     >
                       <ImageContainer>
                         <img

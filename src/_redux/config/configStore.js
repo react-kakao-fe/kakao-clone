@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import myinfo from "../modules/user_info";
 import friend from "../modules/friend_info";
+import chat from "../modules/chat";
 import { signUp, login } from "../modules/login_signup";
 
 const store = configureStore({
@@ -9,6 +10,7 @@ const store = configureStore({
     login,
     myinfo,
     friend,
+    chat,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
