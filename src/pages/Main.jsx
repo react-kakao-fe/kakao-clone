@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { __getUserInfo } from "../_redux/modules/user_info";
 import { __getPlusUser, __postPlusUser } from "../_redux/modules/friend_info";
 import { ReactComponent as Search } from "../assets/search.svg";
 import { ReactComponent as PersonPlus } from "../assets/person-plus.svg";
+import _ from "lodash";
 
 const Main = () => {
+  const [visible, setVisible] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [searchVal, setSearchVal] = useState("");
+  const [chatRoom, setChatRoom] = useState("");
+  const searchRef = useRef(null);
+
   const userInfo = useSelector((state) => state.myinfo.user.data);
   const friendInfo = useSelector((state) => state.friend.userFriend);
   const dispatch = useDispatch();
@@ -19,30 +27,50 @@ const Main = () => {
     dispatch(__getPlusUser());
   }, []);
 
-  const [visible, setVisible] = useState(false);
-  const [modal, setModal] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [searchVal, setSearchVal] = useState("");
+  const plusUserId = () => {
+    dispatch(__postPlusUser(userName));
+  };
+
+  const handleDouble = (e) => {
+    if (e.detail === 2) {
+      console.log(chatRoom);
+      setChatRoom(!chatRoom);
+    }
+  };
+
+  // lodash 친구검색
 
   const searchFriendName = friendInfo.filter((friend) => {
     return friend.nickname.toLowerCase().includes(searchVal.toLowerCase());
   });
+
+  const handleSearchDebounce = _.debounce((e) => {
+    setSearchVal(e.target.value);
+  }, 200);
 
   const handleModal = () => {
     setModal(!modal);
   };
 
   const handleVisible = () => {
+    searchRef.current.focus();
+    searchRef.current.disabled = false;
     setVisible(!visible);
-  };
-
-  const plusUserId = () => {
-    dispatch(__postPlusUser(userName));
   };
 
   const handleFormData = (e) => {
     e.preventDefault();
     plusUserId();
+  };
+
+  // chat
+  const handleChatRoomModal = () => {
+    // dispatch(__postChatRoom(friendInfo.id));
+    setChatRoom(!chatRoom);
+  };
+
+  const handleChatFormData = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -152,11 +180,11 @@ const Main = () => {
                 cursor: "auto",
               }}
             />
+
             <input
               placeholder="이름 검색"
-              onChange={(e) => {
-                setSearchVal(e.target.value);
-              }}
+              onChange={handleSearchDebounce}
+              ref={searchRef}
             />
             <div
               style={{
@@ -211,9 +239,12 @@ const Main = () => {
 
             <MainSearchFriendInlineWrapper>
               {searchFriendName &&
-                searchFriendName.map((nicknames) => {
+                searchFriendName.map((nicknames, index) => {
                   return (
-                    <MainInlineWrapper key={nicknames.id}>
+                    <MainInlineWrapper
+                      key={nicknames.id}
+                      onClick={handleDouble}
+                    >
                       <ImageContainer>
                         <img
                           src={nicknames.imgUrl}
@@ -232,6 +263,25 @@ const Main = () => {
                   );
                 })}
             </MainSearchFriendInlineWrapper>
+            {chatRoom && (
+              <ChatModalContainer>
+                <ChatModal>
+                  {/* header */}
+                  <ChatModalHeaderContainer>
+                    <ChatModalCloseButton onClick={handleChatRoomModal}>
+                      x
+                    </ChatModalCloseButton>
+                  </ChatModalHeaderContainer>
+                  <ChatModalBodyContainer>
+                    <ChatList>dd</ChatList>
+                    <ChatInputFrom onSubmit={handleChatFormData}>
+                      <textarea type="text" />
+                      asd
+                    </ChatInputFrom>
+                  </ChatModalBodyContainer>
+                </ChatModal>
+              </ChatModalContainer>
+            )}
           </MainSearchFriend>
         </MainInlineContainer>
       </MainContainer>
@@ -353,6 +403,67 @@ const HeaderPlusForm = styled.form`
 `;
 // 여기까지
 
+// chat room modal
+const ChatModalContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+`;
+
+const ChatModal = styled.div`
+  position: absolute;
+  width: 300px;
+  height: 450px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+`;
+
+const ChatModalHeaderContainer = styled.div`
+  width: 100%;
+  height: 15%;
+`;
+
+const ChatModalCloseButton = styled.button`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  color: rgba(214, 211, 211, 0.7);
+  font-size: 16px;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const ChatModalBodyContainer = styled.div`
+  width: 100%;
+  height: 85%;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ChatList = styled.div`
+  border: 1px solid black;
+  flex: 3;
+`;
+
+const ChatInputFrom = styled.form`
+  flex: 1;
+  textarea {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    padding: 10px;
+  }
+`;
+
 const HeaderInputContainer = styled.div`
   margin: 10px;
   display: flex;
@@ -410,6 +521,10 @@ const MainInlineWrapper = styled.div`
   width: 100%;
   align-items: center;
   padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(168, 163, 163, 0.1);
+  }
 `;
 
 // 친구목록
