@@ -21,10 +21,16 @@ export const __postPlusUser = createAsyncThunk(
           },
         }
       );
+      if (response.status === 200) {
+        window.location.reload();
+      }
       console.log(response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error);
+      if (error) {
+        alert("이미 친구인 유저 또는 아이디가 없습니다");
+        window.location.reload();
+      }
       return thunkAPI.fulfillWithValue(error);
     }
   }

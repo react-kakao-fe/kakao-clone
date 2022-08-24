@@ -43,9 +43,11 @@ const Main = () => {
 
   // lodash 친구검색
 
-  const searchFriendName = friendInfo.filter((friend) => {
-    return friend.nickname.toLowerCase().includes(searchVal.toLowerCase());
-  });
+  const searchFriendName =
+    friendInfo &&
+    friendInfo.filter((friend) => {
+      return friend.nickname.toLowerCase().includes(searchVal.toLowerCase());
+    });
 
   const handleSearchDebounce = _.debounce((e) => {
     setSearchVal(e.target.value);
@@ -80,131 +82,139 @@ const Main = () => {
     <>
       <MainContainer>
         <>
-          <TopIconContainer>
-            <span>‒</span>
-            <span>ㅁ</span>
-            <span>×</span>
-          </TopIconContainer>
-          <HeaderContainer>
-            <span>친구</span>
-            <HeaderIconContainer>
-              <IconContainer>
-                <SearchIcon onClick={handleVisible} />
-              </IconContainer>
-              <IconContainer>
-                <PersonPlusIcon onClick={handleModal} />
-                {modal && (
-                  <>
-                    <HeaderPlusModalContainer>
-                      <HeaderPlusModal>
-                        <HeaderPlusModalCloseButton onClick={handleModal}>
-                          x
-                        </HeaderPlusModalCloseButton>
-                        <HeaderPlusModalSpaneWrapper>
-                          <span
-                            style={{
-                              color: "black",
-                            }}
-                          >
-                            친구 추가
-                          </span>
-                        </HeaderPlusModalSpaneWrapper>
-                        <HeaderPlusBodyContainer>
-                          <span
-                            style={{
-                              color: "black",
-                              fontSize: "14px",
-                              marginLeft: "20px",
-                              fontWeight: "400",
-                            }}
-                          >
-                            ID로 추가
-                          </span>
-                          <hr style={{ width: "100%", opacity: "1" }} />
-                          <HeaderPlusBodyFormContainer>
-                            <HeaderPlusForm onSubmit={handleFormData}>
-                              <input
-                                type="text"
-                                placeholder="친구 카카오톡 ID"
-                                maxLength="20"
-                                onChange={(e) => setUserName(e.target.value)}
-                              />
+          <div
+            style={{
+              position: "fixed",
+              width: "85%",
+              backgroundColor: "white",
+            }}
+          >
+            <TopIconContainer>
+              <span>‒</span>
+              <span>ㅁ</span>
+              <span>×</span>
+            </TopIconContainer>
+            <HeaderContainer>
+              <span>친구</span>
+              <HeaderIconContainer>
+                <IconContainer>
+                  <SearchIcon onClick={handleVisible} />
+                </IconContainer>
+                <IconContainer>
+                  <PersonPlusIcon onClick={handleModal} />
+                  {modal && (
+                    <>
+                      <HeaderPlusModalContainer>
+                        <HeaderPlusModal>
+                          <HeaderPlusModalCloseButton onClick={handleModal}>
+                            x
+                          </HeaderPlusModalCloseButton>
+                          <HeaderPlusModalSpaneWrapper>
+                            <span
+                              style={{
+                                color: "black",
+                              }}
+                            >
+                              친구 추가
+                            </span>
+                          </HeaderPlusModalSpaneWrapper>
+                          <HeaderPlusBodyContainer>
+                            <span
+                              style={{
+                                color: "black",
+                                fontSize: "14px",
+                                marginLeft: "20px",
+                                fontWeight: "400",
+                              }}
+                            >
+                              ID로 추가
+                            </span>
+                            <hr style={{ width: "100%", opacity: "1" }} />
+                            <HeaderPlusBodyFormContainer>
+                              <HeaderPlusForm onSubmit={handleFormData}>
+                                <input
+                                  type="text"
+                                  placeholder="친구 카카오톡 ID"
+                                  maxLength="20"
+                                  onChange={(e) => setUserName(e.target.value)}
+                                />
+                                <span
+                                  style={{
+                                    fontSize: "14px",
+                                    fontWeight: "400",
+                                    color: "rgba(168, 163, 163, 0.6)",
+                                  }}
+                                >
+                                  {userName.length}/20
+                                </span>
+                              </HeaderPlusForm>
+                            </HeaderPlusBodyFormContainer>
+                            <div
+                              style={{
+                                display: "flex",
+                                padding: "20px",
+                                width: "100%",
+                                alignItems: "flex-start",
+                                justifyContent: "flex-start",
+                              }}
+                            >
                               <span
                                 style={{
-                                  fontSize: "14px",
-                                  fontWeight: "400",
+                                  fontSize: "12px",
                                   color: "rgba(168, 163, 163, 0.6)",
                                 }}
                               >
-                                {userName.length}/20
+                                카카오톡 ID를 등록하고 검색을 허용한 친구만 찾을
+                                수 있습니다.
                               </span>
-                            </HeaderPlusForm>
-                          </HeaderPlusBodyFormContainer>
-                          <div
-                            style={{
-                              display: "flex",
-                              padding: "20px",
-                              width: "100%",
-                              alignItems: "flex-start",
-                              justifyContent: "flex-start",
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontSize: "12px",
-                                color: "rgba(168, 163, 163, 0.6)",
-                              }}
-                            >
-                              카카오톡 ID를 등록하고 검색을 허용한 친구만 찾을
-                              수 있습니다.
-                            </span>
-                          </div>
-                        </HeaderPlusBodyContainer>
-                      </HeaderPlusModal>
-                    </HeaderPlusModalContainer>
-                  </>
-                )}
-              </IconContainer>
-            </HeaderIconContainer>
-          </HeaderContainer>
-          <HeaderInputContainer
-            style={{
-              display: visible ? "flex" : "none",
-            }}
-          >
-            <SearchIcon
+                            </div>
+                          </HeaderPlusBodyContainer>
+                        </HeaderPlusModal>
+                      </HeaderPlusModalContainer>
+                    </>
+                  )}
+                </IconContainer>
+              </HeaderIconContainer>
+            </HeaderContainer>
+            <HeaderInputContainer
               style={{
-                width: "47px",
-                height: "47px",
-                padding: "5px 15px",
-                color: "rgba(168, 163, 163, 0.5)",
-                position: "absolute",
-                zIndex: "1",
-                cursor: "auto",
-              }}
-            />
-
-            <input
-              placeholder="이름 검색"
-              onChange={handleSearchDebounce}
-              ref={searchRef}
-            />
-            <div
-              style={{
-                right: "0",
-                position: "absolute",
-                display: "flex",
-                alignItems: "center",
-                fontSize: "12px",
-                fontWeight: "bold",
-                borderLeft: "1px solid rgba(168, 163, 163, 1)",
-                paddingRight: "10px",
-                color: "rgba(168, 163, 163, 1)",
+                display: visible ? "flex" : "none",
               }}
             >
-              <span style={{ paddingLeft: "5px" }}>통합검색</span>
-            </div>
-          </HeaderInputContainer>
+              <SearchIcon
+                style={{
+                  width: "47px",
+                  height: "47px",
+                  padding: "5px 15px",
+                  color: "rgba(168, 163, 163, 0.5)",
+                  position: "absolute",
+                  zIndex: "1",
+                  cursor: "auto",
+                }}
+              />
+
+              <input
+                placeholder="이름 검색"
+                onChange={handleSearchDebounce}
+                ref={searchRef}
+              />
+              <div
+                style={{
+                  right: "0",
+                  position: "absolute",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  borderLeft: "1px solid rgba(168, 163, 163, 1)",
+                  paddingRight: "10px",
+                  color: "rgba(168, 163, 163, 1)",
+                }}
+              >
+                <span style={{ paddingLeft: "5px" }}>통합검색</span>
+              </div>
+            </HeaderInputContainer>
+          </div>
         </>
 
         {/* MainBody 부분 */}
@@ -242,7 +252,7 @@ const Main = () => {
 
             <MainSearchFriendInlineWrapper>
               {searchFriendName &&
-                searchFriendName.map((nicknames, index) => {
+                searchFriendName.map((nicknames) => {
                   return (
                     <MainInlineWrapper
                       key={nicknames.id}
@@ -518,8 +528,10 @@ const SearchIcon = styled(Search)`
 // Main StyledComponent
 const MainContainer = styled.div`
   width: 100%;
+  overflow-y: scroll;
 `;
 const MainInlineContainer = styled.div`
+  margin-top: 100px;
   padding: 15px;
 `;
 
@@ -529,6 +541,7 @@ const MainInlineWrapper = styled.div`
   align-items: center;
   padding: 10px;
   cursor: pointer;
+
   &:hover {
     background-color: rgba(168, 163, 163, 0.1);
   }
