@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://13.209.17.224";
+axios.defaults.baseURL = "http://3.39.237.124";
 const initialState = {
   user: [],
   isLoading: false,

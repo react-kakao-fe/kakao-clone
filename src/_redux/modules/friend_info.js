@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-const BASE_URL = "http://13.209.17.224";
+const BASE_URL = "http://3.39.237.124";
 const acessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
@@ -21,10 +21,16 @@ export const __postPlusUser = createAsyncThunk(
           },
         }
       );
+      if (response.status === 200) {
+        window.location.reload();
+      }
       console.log(response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error);
+      if (error) {
+        alert("이미 친구인 유저 또는 아이디가 없습니다");
+        window.location.reload();
+      }
       return thunkAPI.fulfillWithValue(error);
     }
   }
