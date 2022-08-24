@@ -102,6 +102,7 @@ const DisplayNone = keyframes`
   from{
     opacity: 1;
     display:flex;
+    z-index: 1;
   }
   to{
     opacity: 0;
@@ -113,6 +114,7 @@ const DisplayNone2 = keyframes`
 from{
     opacity: 1;
     display:flex;
+    z-index: 1;
   }
   to{
     opacity: 0;
@@ -129,8 +131,9 @@ const BellSlashDarkContainer = styled.div`
   padding: 30px;
   border: 1px solid black;
   background-color: rgba(0, 0, 0, 0.7);
-  animation: ${DisplayNone} forwards 3s 0.5s;
+  animation: ${DisplayNone} forwards 3s;
   display: ${(props) => props.display || "none"};
+  z-index: ${(props) => props.zindex || -1};
 `;
 
 const BellDarkContainer = styled.div`
@@ -141,8 +144,9 @@ const BellDarkContainer = styled.div`
   padding: 30px;
   border: 1px solid black;
   background-color: rgba(0, 0, 0, 0.7);
-  animation: ${DisplayNone2} forwards 3s 0.5s;
+  animation: ${DisplayNone2} forwards 3s;
   display: ${(props) => props.display || "none"};
+  z-index: ${(props) => props.zindex || -1};
 `;
 
 const SettingContainer = styled.div`
@@ -203,8 +207,12 @@ export const BottomIcon = () => {
 
   useEffect(() => {
     <>
-      <BellDarkContainer style={{ display: "none", opacity: "0" }} />
-      <BellSlashDarkContainer style={{ display: "none", opacity: "0" }} />
+      <BellDarkContainer
+        style={{ display: "none", opacity: "0", zIndex: "-1" }}
+      />
+      <BellSlashDarkContainer
+        style={{ display: "none", opacity: "0", zIndex: "-1" }}
+      />
     </>;
   }, []);
 
@@ -228,7 +236,7 @@ export const BottomIcon = () => {
           <>
             <BellSlashicon onClick={onChangeBell} />
 
-            <BellSlashDarkContainer display={display}>
+            <BellSlashDarkContainer display={display} zIndex={-1}>
               <BellSlashicon
                 style={{
                   color: "white",

@@ -5,13 +5,11 @@ import { ReactComponent as ChatDots } from "../assets/chat-dots.svg";
 import { ReactComponent as ChatPlus } from "../assets/chat-plus-outline.svg";
 import { NavLink } from "react-router-dom";
 import kakaoImg from "../assets/kakao.png";
-import { useSelector } from "react-redux";
 
 const OpenChat = () => {
   const [visible, setVisible] = useState(false);
   const [modal, setModal] = useState(false);
   const [serch, setSerch] = useState("");
-  const friendInfo = useSelector((state) => state.friend.userFriend);
 
   const handleModal = () => {
     setModal(!modal);
@@ -105,25 +103,6 @@ const OpenChat = () => {
                                 친구
                               </span>
                             </div>
-                            {friendInfo
-                              .filter((val) => {
-                                if (serch === "") {
-                                  return val;
-                                } else if (val.nickname.includes(serch)) {
-                                  return val;
-                                }
-                              })
-                              .map((friend) => (
-                                <FriendList key={friend.id}>
-                                  <img
-                                    src={friend.imgUrl}
-                                    alt=""
-                                    width="30px"
-                                    height="30px"
-                                  />
-                                  <span>{friend.nickname}</span>
-                                </FriendList>
-                              ))}
                           </HeaderChatPlusBodyContainer>
                         </HeaderChatPlusModal>
                       </HeaderChatPlusModalContainer>

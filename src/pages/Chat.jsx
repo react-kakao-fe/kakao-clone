@@ -6,6 +6,7 @@ import { ReactComponent as ChatPlus } from "../assets/chat-plus-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { __getPlusUser } from "../_redux/modules/friend_info";
 import { NavLink } from "react-router-dom";
+import _ from "lodash";
 
 const ChatContainer = styled.div`
   width: 100%;
@@ -32,6 +33,16 @@ const Chat = () => {
   useEffect(() => {
     dispatch(__getPlusUser());
   }, []);
+
+  // lodash 검색기능
+  const searchFriendName = friendInfo.filter((friend) => {
+    return friend.nickname.toLowerCase().includes(serch.toLowerCase());
+  });
+
+  const handleSearchDebounce = _.debounce((e) => {
+    setSerch(e.target.value);
+  }, 200);
+
   return (
     <>
       <ChatContainer>
@@ -99,6 +110,7 @@ const Chat = () => {
                                 placeholder="이름 검색"
                                 onChange={(e) => {
                                   setSerch(e.target.value);
+                                  handleSearchDebounce();
                                 }}
                               />
                             </HeaderChatPlusInputContainer>
@@ -121,25 +133,17 @@ const Chat = () => {
                               친구
                             </span>
                           </div>
-                          {friendInfo
-                            .filter((val) => {
-                              if (serch === "") {
-                                return val;
-                              } else if (val.nickname.includes(serch)) {
-                                return val;
-                              }
-                            })
-                            .map((friend) => (
-                              <FriendList key={friend.id}>
-                                <img
-                                  src={friend.imgUrl}
-                                  alt=""
-                                  width="30px"
-                                  height="30px"
-                                />
-                                <span>{friend.nickname}</span>
-                              </FriendList>
-                            ))}
+                          {searchFriendName.map((friend) => (
+                            <FriendList key={friend.id}>
+                              <img
+                                src={friend.imgUrl}
+                                alt=""
+                                width="30px"
+                                height="30px"
+                              />
+                              <span>{friend.nickname}</span>
+                            </FriendList>
+                          ))}
                         </HeaderChatPlusBodyContainer>
                       </HeaderChatPlusModal>
                     </HeaderChatPlusModalContainer>

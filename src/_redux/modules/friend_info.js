@@ -47,6 +47,27 @@ export const __getPlusUser = createAsyncThunk(
   }
 );
 
+export const __postChatRoom = createAsyncThunk(
+  "user/postChatRoom",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/chatRooms/friend/${payload}`,
+        payload,
+        {
+          headers: {
+            authorization: acessToken,
+            "refresh-token": refreshToken,
+          },
+        }
+      );
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      return thunkAPI.fulfillWithValue(error);
+    }
+  }
+);
+
 const initialState = {
   userFriend: [],
   isLoading: false,
@@ -63,6 +84,11 @@ const friendSlice = createSlice({
     },
 
     [__getPlusUser.fulfilled]: (state, action) => {
+      state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경합니다.
+      state.userFriend = action.payload;
+    },
+
+    [__postChatRoom.fulfilled]: (state, action) => {
       state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경합니다.
       state.userFriend = action.payload;
     },
