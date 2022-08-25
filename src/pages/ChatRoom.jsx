@@ -174,6 +174,7 @@ const ButtonContainer = styled.div`
   padding-top: 20px;
   justify-content: center;
   padding-right: 10px;
+
   button {
     width: 50px;
     height: 30px;
