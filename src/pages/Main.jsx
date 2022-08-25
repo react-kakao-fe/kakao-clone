@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { __getUserInfo } from "../_redux/modules/user_info";
 import { __getPlusUser, __postPlusUser } from "../_redux/modules/friend_info";
-import { addChatroom } from "../_redux/modules/chat";
+import { addChatroom } from "../_redux/modules/chat_sever";
 import { ReactComponent as Search } from "../assets/search.svg";
 import { ReactComponent as PersonPlus } from "../assets/person-plus.svg";
 import _ from "lodash";

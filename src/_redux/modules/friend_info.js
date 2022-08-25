@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-const BASE_URL = "http://13.209.17.224";
-const acessToken = localStorage.getItem("authorization");
+const BASE_URL = "http://54.180.79.105";
+const accessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
 // POST 친구추가
@@ -16,7 +16,7 @@ export const __postPlusUser = createAsyncThunk(
         username,
         {
           headers: {
-            authorization: acessToken,
+            authorization: accessToken,
             "refresh-token": refreshToken,
           },
         }
@@ -42,7 +42,7 @@ export const __getPlusUser = createAsyncThunk(
     try {
       const response = await axios.get(`${BASE_URL}/api/members/friends`, {
         headers: {
-          authorization: acessToken,
+          authorization: accessToken,
           "refresh-token": refreshToken,
         },
       });
@@ -62,7 +62,7 @@ export const __postChatRoom = createAsyncThunk(
         payload,
         {
           headers: {
-            authorization: acessToken,
+            authorization: accessToken,
             "refresh-token": refreshToken,
           },
         }
