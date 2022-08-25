@@ -1,14 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// axios.defaults.baseURL = "http://3.39.237.124";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 const initialState = {
   user: [],
   isLoading: false,
   error: null,
 };
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 //회원가입
 export const signUp = createAsyncThunk(

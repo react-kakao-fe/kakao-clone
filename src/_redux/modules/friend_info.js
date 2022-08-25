@@ -3,6 +3,7 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const acessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
@@ -24,7 +25,6 @@ export const __postPlusUser = createAsyncThunk(
       if (response.status === 200) {
         window.location.reload();
       }
-      console.log(response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       if (error) {

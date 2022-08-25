@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { __getUserInfo } from "../_redux/modules/user_info";
 import { __getPlusUser, __postPlusUser } from "../_redux/modules/friend_info";
-import { addChatroom } from "../_redux/modules/chat";
+import { addChatroom, __getChatRoom } from "../_redux/modules/chat";
 import { ReactComponent as Search } from "../assets/search.svg";
 import { ReactComponent as PersonPlus } from "../assets/person-plus.svg";
 import _ from "lodash";
@@ -18,15 +18,18 @@ const Main = () => {
 
   const userInfo = useSelector((state) => state.myinfo.user.data);
   const friendInfo = useSelector((state) => state.friend.userFriend);
+  const chatInfo = useSelector((state) => state.chat.chatList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  console.log(chatInfo);
 
   useEffect(() => {
     dispatch(__getUserInfo());
   }, []);
 
   useEffect(() => {
-    dispatch(__getPlusUser());
+    dispatch(__getChatRoom(chatInfo));
   }, []);
 
   const plusUserId = () => {
@@ -54,6 +57,7 @@ const Main = () => {
   };
 
   const handleFormData = (e) => {
+    // dispatch(__getChatRoom(chatInfo.id));
     e.preventDefault();
     plusUserId();
   };
@@ -242,7 +246,8 @@ const Main = () => {
                       onClick={(e) => {
                         if (e.detail === 2) {
                           dispatch(addChatroom(nicknames.id));
-                          navigate(`chatroom/${nicknames.id}`);
+                          navigate(`chatroom/${chatInfo.id}`);
+                          dispatch(__getChatRoom(chatInfo.id));
                         }
                       }}
                     >

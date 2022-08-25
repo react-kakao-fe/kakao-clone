@@ -13,8 +13,10 @@ const Chat = () => {
   const [visible, setVisible] = useState(false);
   const [modal, setModal] = useState(false);
   const [serch, setSerch] = useState("");
-  const chatInfo = useSelector((state) => state.chat.chat);
+  const chatInfo = useSelector((state) => state.chat.chatList);
+  // const chatId = useSelector((state) => state.chat.chatList);
 
+  // console.log(chatId);
   console.log(chatInfo);
 
   const handleModal = () => {

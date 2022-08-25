@@ -1,16 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 const acessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
-const initialState = {
-  chat: [],
-  isLoading: false,
-  error: null,
-};
 
 //채팅방 생성
 export const addChatroom = createAsyncThunk(
@@ -20,6 +13,7 @@ export const addChatroom = createAsyncThunk(
       const response = await axios.post(
         `${BASE_URL}/api/chatRooms/friend/${payload}`,
         payload,
+
         {
           headers: {
             contentType: "application/json",
@@ -53,10 +47,41 @@ export const __getChatRoom = createAsyncThunk(
   }
 );
 
+//이전 채팅내용 가져오기
+export const getMessage = createAsyncThunk(
+  "get/chat",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/room/3`, {
+        headers: {
+          contentType: "application/json",
+          authorization: acessToken,
+          "refresh-token": refreshToken,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+const initialState = {
+  chat: [],
+  chatList: [],
+  isLoading: false,
+  error: null,
+};
+
 export const chatSlice = createSlice({
   name: "chat",
   initialState,
-  reducers: {},
+  reducers: {
+    addMessage: (state, { payload }) => {
+      state.chat = [...state.chat, { payload }];
+    },
+  },
   extraReducers: {
     [addChatroom.pending]: (state) => {
       state.loading = true;
@@ -73,10 +98,15 @@ export const chatSlice = createSlice({
 
     [__getChatRoom.fulfilled]: (state, { payload }) => {
       state.loading = false;
-      state.chat = payload;
+      state.chatList = payload;
       state.error = payload;
+    },
+    [getMessage.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.chat.push(payload);
     },
   },
 });
 
+export const { addMessage } = chatSlice.actions;
 export default chatSlice.reducer;

@@ -3,6 +3,7 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const acessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
@@ -10,7 +11,6 @@ export const __getUserInfo = createAsyncThunk(
   "user/getUser",
   async (payload, thunkAPI) => {
     try {
-      console.log(`${BASE_URL}/api/members/info`);
       const response = await axios.get(`${BASE_URL}/api/members/info`, {
         headers: {
           authorization: acessToken,
