@@ -4,19 +4,81 @@ import Register from "../pages/Register";
 import Chat from "../pages/Chat";
 import Login from "../pages/Login";
 import Main from "../pages/Main";
+import OpenChat from "../pages/OpenChat";
+import MoreDetail from "../pages/MoreDetail";
+import Home from "../pages/Home";
+import ChatRoom from "../pages/ChatRoom";
+import PrivateRoute from "./PrivateRoute";
 
 const Router = () => {
+  const access = localStorage.getItem("authorization");
+  const refresh = localStorage.getItem("refresh-token");
+
   return (
     <BrowserRouter>
       <Routes>
+        <Route element={<Home />}>
+          {/* 메인 */}
+          <Route
+            path="/"
+            element={
+              <PrivateRoute
+                access={access}
+                refresh={refresh}
+                component={<Main />}
+              />
+            }
+          />
+          {/* 채팅 */}
+          <Route
+            path="chat"
+            element={
+              <PrivateRoute
+                access={access}
+                refresh={refresh}
+                component={<Chat />}
+              />
+            }
+          />
+          {/* 채팅방 */}
+          <Route
+            path="chatroom/:id"
+            element={
+              <PrivateRoute
+                access={access}
+                refresh={refresh}
+                component={<ChatRoom />}
+              />
+            }
+          />
+
+          {/* 오픈채팅 */}
+          <Route
+            path="openchat"
+            element={
+              <PrivateRoute
+                access={access}
+                refresh={refresh}
+                component={<OpenChat />}
+              />
+            }
+          />
+          {/* 더보기 */}
+          <Route
+            path="detail"
+            element={
+              <PrivateRoute
+                access={access}
+                refresh={refresh}
+                component={<MoreDetail />}
+              />
+            }
+          />
+        </Route>
         {/* 회원가입 */}
-        <Route path="#" element={<Register />} />
+        <Route path="/register" element={<Register />} />
         {/* 로그인 */}
-        <Route path="#" element={<Login />} />
-        {/* 메인 */}
-        <Route path="/" element={<Main />} />
-        {/* 채팅 */}
-        <Route path="#" element={<Chat />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

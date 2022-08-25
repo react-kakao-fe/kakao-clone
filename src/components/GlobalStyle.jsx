@@ -56,10 +56,10 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   line-height: 1.2;
   position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(180, 172, 172, 0.5);
 }
 a {
   text-decoration:none;
