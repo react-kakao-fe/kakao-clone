@@ -40,35 +40,23 @@ const ChatTimeBox = styled.div`
   }
 `;
 
-function Chatlists() {
+function ChatList({ chatRoomId, lastChatTime, chatRoomName, lastContent }) {
   return (
     <>
       <ChatWrap>
         <ChatContainer>
           <img src="https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049" />
           <ChatBox>
-            <p>참여자 이름</p>
-            <span>마지막 채팅내용</span>
+            <p>{chatRoomName}</p>
+            <span>{lastContent}</span>
           </ChatBox>
         </ChatContainer>
         <ChatTimeBox>
-          <span>채팅시간</span>
-        </ChatTimeBox>
-      </ChatWrap>
-      <ChatWrap>
-        <ChatContainer>
-          <img src="https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049" />
-          <ChatBox>
-            <p>참여자 이름</p>
-            <span>마지막 채팅내용</span>
-          </ChatBox>
-        </ChatContainer>
-        <ChatTimeBox>
-          <span>채팅시간</span>
+          <span>{lastChatTime}</span>
         </ChatTimeBox>
       </ChatWrap>
     </>
   );
 }
 
-export default Chatlists;
+export default ChatList;

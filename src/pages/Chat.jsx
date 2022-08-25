@@ -8,6 +8,7 @@ import ChatList from "../components/ChatList";
 import { __getPlusUser } from "../_redux/modules/friend_info";
 import { NavLink } from "react-router-dom";
 import _ from "lodash";
+import { getChatRoom } from "../_redux/modules/chat_sever";
 
 const ChatContainer = styled.div`
   width: 100%;
@@ -34,6 +35,13 @@ const Chat = () => {
   useEffect(() => {
     dispatch(__getPlusUser());
   }, []);
+
+  //채팅방 목록 불러오기
+  useEffect(() => {
+    dispatch(getChatRoom());
+  }, []);
+
+  const chatRoomList = useSelector((state) => state.chat.chatRoom);
 
   // lodash 검색기능
   const searchFriendName = friendInfo.filter((friend) => {
@@ -192,7 +200,19 @@ const Chat = () => {
         {/* ChatBody */}
         <ChatHeaderContainer>
           <ChatInlineWrapperr>
-            <ChatList />
+            {chatRoomList.map((chatRoom) => {
+              if (!(chatRoom.lastChatTime && chatRoom.lastContent === null)) {
+                return (
+                  <ChatList
+                    key={chatRoom.id}
+                    chatRoomId={chatRoom.chatRoomId}
+                    chatRoomName={chatRoom.chatRoomName}
+                    lastContent={chatRoom.lastContent}
+                    lastChatTime={chatRoom.lastChatTime}
+                  ></ChatList>
+                );
+              }
+            })}
           </ChatInlineWrapperr>
         </ChatHeaderContainer>
       </ChatContainer>

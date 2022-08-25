@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://54.180.79.105";
+const BASE_URL = "http://3.34.4.242";
 const initialState = {
   user: [],
   isLoading: false,
@@ -14,7 +14,7 @@ export const signUp = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     console.log(payload);
     try {
-      const response = await axios.post("/api/members/signup", {
+      const response = await axios.post(`${BASE_URL}/api/members/signup`, {
         username: payload.username,
         nickname: payload.nickname,
         password: payload.password,
@@ -57,7 +57,7 @@ export const login = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .post("/api/members/login", payload)
+        .post(`${BASE_URL}/api/members/login`, payload)
         .then((response) => {
           console.log(response);
           window.localStorage.setItem(

@@ -19,6 +19,9 @@ const Main = () => {
 
   const userInfo = useSelector((state) => state.myinfo.user.data);
   const friendInfo = useSelector((state) => state.friend.userFriend);
+
+  const Info = useSelector((state) => state);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -259,7 +262,6 @@ const Main = () => {
                       onClick={(e) => {
                         dispatch(addChatroom(nicknames.id));
                         navigate(`chatroom/${nicknames.id}`);
-                        // handleDouble(e);
                       }}
                     >
                       <ImageContainer>

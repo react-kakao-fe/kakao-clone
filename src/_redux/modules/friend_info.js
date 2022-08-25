@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-const BASE_URL = "http://54.180.79.105";
+const BASE_URL = "http://3.34.4.242";
 const accessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
@@ -40,12 +40,15 @@ export const __getPlusUser = createAsyncThunk(
   "user/getPlusUser",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/members/friends`, {
-        headers: {
-          authorization: accessToken,
-          "refresh-token": refreshToken,
-        },
-      });
+      const response = await axios.get(
+        `http://3.34.4.242/api/members/friends`,
+        {
+          headers: {
+            authorization: accessToken,
+            "refresh-token": refreshToken,
+          },
+        }
+      );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.fulfillWithValue(error);

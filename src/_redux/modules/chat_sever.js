@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://54.180.79.105";
+const BASE_URL = "http://3.34.4.242";
 const accessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
 const initialState = {
+  roomId: "",
+  chatRoom: [],
   chat: [],
   isLoading: false,
   error: null,
@@ -17,7 +19,7 @@ export const addChatroom = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `/api/chatRooms/friend/${payload}`,
+        `${BASE_URL}/api/chatRooms/friend/${payload}`,
         null,
         {
           headers: {
@@ -27,7 +29,8 @@ export const addChatroom = createAsyncThunk(
           },
         }
       );
-      return response.data;
+      console.log(response.data);
+      return response.data.data.roomId;
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.response.data);
@@ -40,14 +43,33 @@ export const loadMessage = createAsyncThunk(
   "get/chat",
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/room/4`, {
+      const response = await axios.get(`${BASE_URL}/api/room/${payload}`, {
         headers: {
           contentType: "application/json",
           authorization: accessToken,
           "refresh-token": refreshToken,
         },
       });
-      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//채팅방 전체 불러오기
+export const getChatRoom = createAsyncThunk(
+  "get/chatroom",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/chatRooms`, {
+        headers: {
+          contentType: "application/json",
+          authorization: accessToken,
+          "refresh-token": refreshToken,
+        },
+      });
       return response.data;
     } catch (error) {
       console.log(error);
@@ -65,21 +87,17 @@ export const preChatSlice = createSlice({
     },
   },
   extraReducers: {
-    [addChatroom.pending]: (state) => {
-      state.isLoading = true;
-      state.error = null;
-    },
     [addChatroom.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.success = true;
-    },
-    [addChatroom.rejected]: (state, { payload }) => {
-      state.isLoading = false;
-      state.error = payload;
+      state.roomId = payload;
     },
     [loadMessage.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.chat = payload;
+    },
+    [getChatRoom.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.chatRoom = payload;
     },
   },
 });

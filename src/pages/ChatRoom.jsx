@@ -15,7 +15,7 @@ function ChatRoom() {
   const headers = {
     Authorization: window.localStorage.getItem("authorization"),
   };
-  const socket = new SockJS("http://54.180.79.105/socket");
+  const socket = new SockJS("http://3.34.4.242/socket");
   const client = Stomp.over(socket);
 
   //렌더되면 소켓 연결실행
@@ -26,10 +26,15 @@ function ChatRoom() {
     };
   }, []);
 
+  //roomid 가져오기
+  const roomID = useSelector((state) => state.chat.roomId);
+  console.log(roomID);
+
   //axios로 데이터 불러오는 용
   useEffect(() => {
-    dispatch(loadMessage());
+    dispatch(loadMessage(3));
   }, []);
+
   const chatList = useSelector((state) => state.chat.chat);
 
   //유저인포에서 내 정보 가져오기
@@ -43,7 +48,7 @@ function ChatRoom() {
     try {
       client.connect(headers, () => {
         client.subscribe(
-          `/sub/channel/4`,
+          `/sub/channel/3`,
           (data) => {
             const newMessage = JSON.parse(data.body);
             dispatch(addMessage(newMessage));
@@ -59,7 +64,7 @@ function ChatRoom() {
   //메시지 보내기
   const sendMessage = () => {
     client.send(
-      `/pub/message/4`,
+      `/pub/message/3`,
       headers,
       JSON.stringify({
         content: message,
