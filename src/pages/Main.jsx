@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { __getUserInfo } from "../_redux/modules/user_info";
-import { __getPlusUser, __postPlusUser } from "../_redux/modules/friend_info";
-import { addChatroom, __getChatRoom } from "../_redux/modules/chat";
+import { __postPlusUser } from "../_redux/modules/friend_info";
+import { addChatroom } from "../_redux/modules/chat_sever";
 import { ReactComponent as Search } from "../assets/search.svg";
 import { ReactComponent as PersonPlus } from "../assets/person-plus.svg";
 import _ from "lodash";
@@ -26,10 +26,6 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(__getUserInfo());
-  }, []);
-
-  useEffect(() => {
-    dispatch(__getChatRoom(chatInfo));
   }, []);
 
   const plusUserId = () => {
@@ -247,7 +243,6 @@ const Main = () => {
                         if (e.detail === 2) {
                           dispatch(addChatroom(nicknames.id));
                           navigate(`chatroom/${chatInfo.id}`);
-                          dispatch(__getChatRoom(chatInfo.id));
                         }
                       }}
                     >

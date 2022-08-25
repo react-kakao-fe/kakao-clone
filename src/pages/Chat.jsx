@@ -7,25 +7,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { __getPlusUser } from "../_redux/modules/friend_info";
 import { NavLink } from "react-router-dom";
 import _ from "lodash";
-import { __getChatRoom } from "../_redux/modules/chat";
 
 const Chat = () => {
   const [visible, setVisible] = useState(false);
   const [modal, setModal] = useState(false);
   const [serch, setSerch] = useState("");
   const chatInfo = useSelector((state) => state.chat.chatList);
-  // const chatId = useSelector((state) => state.chat.chatList);
-
-  // console.log(chatId);
   console.log(chatInfo);
 
   const handleModal = () => {
     setModal(!modal);
   };
-
-  useEffect(() => {
-    dispatch(__getChatRoom());
-  }, []);
 
   const dispatch = useDispatch();
 

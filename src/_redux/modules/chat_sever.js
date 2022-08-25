@@ -3,6 +3,8 @@ import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const acessToken = localStorage.getItem("authorization");
+
+const accessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
 //채팅방 생성
@@ -17,7 +19,7 @@ export const addChatroom = createAsyncThunk(
         {
           headers: {
             contentType: "application/json",
-            authorization: acessToken,
+            authorization: accessToken,
             "refresh-token": refreshToken,
           },
         }
@@ -29,36 +31,19 @@ export const addChatroom = createAsyncThunk(
   }
 );
 
-export const __getChatRoom = createAsyncThunk(
-  "get/chatroom",
-  async (payload, thunkAPI) => {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/chatRooms`, {
-        headers: {
-          authorization: acessToken,
-          "refresh-token": refreshToken,
-        },
-      });
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      console.log(error.response);
-      return thunkAPI.fulfillWithValue(error);
-    }
-  }
-);
-
 //이전 채팅내용 가져오기
-export const getMessage = createAsyncThunk(
+export const loadMessage = createAsyncThunk(
   "get/chat",
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/room/3`, {
+      const response = await axios.get(`${BASE_URL}/api/room/4`, {
         headers: {
           contentType: "application/json",
-          authorization: acessToken,
+          authorization: accessToken,
           "refresh-token": refreshToken,
         },
       });
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -74,39 +59,33 @@ const initialState = {
   error: null,
 };
 
-export const chatSlice = createSlice({
+export const preChatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
     addMessage: (state, { payload }) => {
-      state.chat = [...state.chat, { payload }];
+      state.chat = [payload, ...state.chat];
     },
   },
   extraReducers: {
     [addChatroom.pending]: (state) => {
-      state.loading = true;
+      state.isLoading = true;
       state.error = null;
     },
     [addChatroom.fulfilled]: (state, { payload }) => {
-      state.loading = false;
+      state.isLoading = false;
       state.success = true;
     },
     [addChatroom.rejected]: (state, { payload }) => {
-      state.loading = false;
+      state.isLoading = false;
       state.error = payload;
     },
-
-    [__getChatRoom.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.chatList = payload;
-      state.error = payload;
-    },
-    [getMessage.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.chat.push(payload);
+    [loadMessage.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.chat = payload;
     },
   },
 });
 
-export const { addMessage } = chatSlice.actions;
-export default chatSlice.reducer;
+export const { addMessage } = preChatSlice.actions;
+export default preChatSlice.reducer;

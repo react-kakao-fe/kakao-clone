@@ -1,27 +1,26 @@
 import { React, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage } from "../_redux/modules/chat";
-import { getMessage } from "../_redux/modules/chat";
+import { loadMessage } from "../_redux/modules/chat_sever";
+import { addMessage } from "../_redux/modules/chat_sever";
+import { __getUserInfo } from "../_redux/modules/user_info";
+import Friend from "../components/Chat/Friend";
+import Me from "../components/Chat/Me";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import styled from "styled-components";
-import { __getUserInfo } from "../_redux/modules/user_info";
 
 function ChatRoom() {
   //기본설정---헤더, 토큰, 주소설정
   const dispatch = useDispatch();
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState("");
   const headers = {
     Authorization: window.localStorage.getItem("authorization"),
   };
-  const myId = useSelector((state) => state.myinfo.user.data.id);
-  const chatList = useSelector((state) => state.chat.chat.payload);
-  const chat = useSelector((state) => state.chat.chat);
-
-  console.log(chat);
-
-  const socket = new SockJS("http://54.180.79.105/socket");
+  const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/socket`);
   const client = Stomp.over(socket);
+
+  const chatList = useSelector((state) => state.chat.chat);
+  const userInfo = useSelector((state) => state.myinfo.user.data);
 
   //렌더되면 소켓 연결실행
   useEffect(() => {
@@ -31,23 +30,21 @@ function ChatRoom() {
     };
   }, []);
 
-  //렌더되면 이전 채팅 데이터 불러오기
+  //axios로 데이터 불러오는 용
   useEffect(() => {
-    dispatch(getMessage());
+    dispatch(loadMessage());
   }, []);
 
   useEffect(() => {
     dispatch(__getUserInfo());
   }, []);
 
-  const handleForm = (e) => {
-    e.preventDefault();
-    setMessage("");
-  };
-
   const handleEnterPress = (e) => {
     if (e.keyCode === 13 && e.shiftKey == false) {
       sendMessage();
+    }
+    if (message === "") {
+      e.perventDefault();
     }
   };
 
@@ -56,7 +53,7 @@ function ChatRoom() {
     try {
       client.connect(headers, () => {
         client.subscribe(
-          `/sub/channel/3`,
+          `/sub/channel/4`,
           (data) => {
             const newMessage = JSON.parse(data.body);
             dispatch(addMessage(newMessage));
@@ -70,7 +67,7 @@ function ChatRoom() {
   //메시지 보내기
   const sendMessage = () => {
     client.send(
-      `/pub/message/3`,
+      `/pub/message/4`,
       headers,
       JSON.stringify({
         content: message,
@@ -84,25 +81,29 @@ function ChatRoom() {
       <MessageWrapper>
         {chatList &&
           chatList.map((chat) => {
-            if (myId === chat.memberId) {
-              console.log(chat.memberId, myId);
+            if (chat.memberId === userInfo?.id) {
               return (
                 <div
                   style={{
-                    color: "red",
-                    height: "15px",
+                    height: "100%",
                   }}
                 >
-                  <span style={{ color: "red" }}>{chat}</span>
+                  <Me content={chat.content} />
                 </div>
               );
             } else {
-              return <div style={{ color: "black" }}>{chat.content}</div>;
+              return (
+                <Friend
+                  content={chat.content}
+                  nickname={chat.nickname}
+                  imgUrl={chat.imgUrl}
+                />
+              );
             }
           })}
       </MessageWrapper>
       <MessageFormContainer>
-        <MessageForm type="submit" onSubmit={handleForm}>
+        <MessageForm type="submit">
           <textarea
             type="button"
             value={message}
@@ -130,6 +131,10 @@ const MessageWrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  display: flex;
+  padding: 10px;
+  flex-direction: column-reverse;
+  background-color: #b2c7d9;
 `;
 
 const MessageFormContainer = styled.div`
@@ -137,7 +142,6 @@ const MessageFormContainer = styled.div`
   height: 100%;
   flex: 1;
   background-color: white;
-  border: 1px solid black;
 `;
 
 const MessageForm = styled.form`
@@ -159,6 +163,7 @@ const ButtonContainer = styled.div`
   flex: 3;
   padding-top: 20px;
   justify-content: center;
+  padding-right: 10px;
   button {
     width: 50px;
     height: 30px;

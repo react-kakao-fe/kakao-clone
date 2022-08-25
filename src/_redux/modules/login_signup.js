@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const initialState = {
   user: [],
   isLoading: false,
@@ -58,6 +59,7 @@ export const login = createAsyncThunk(
     try {
       const response = await axios
         .post(`${BASE_URL}/api/members/login`, payload)
+
         .then((response) => {
           console.log(response);
           window.localStorage.setItem(

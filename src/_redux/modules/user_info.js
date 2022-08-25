@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true;
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const acessToken = localStorage.getItem("authorization");
+const accessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
 export const __getUserInfo = createAsyncThunk(
@@ -13,7 +13,7 @@ export const __getUserInfo = createAsyncThunk(
     try {
       const response = await axios.get(`${BASE_URL}/api/members/info`, {
         headers: {
-          authorization: acessToken,
+          authorization: accessToken,
           "refresh-token": refreshToken,
         },
       });
