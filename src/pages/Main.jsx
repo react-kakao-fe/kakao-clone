@@ -81,6 +81,8 @@ const Main = () => {
     e.preventDefault();
   };
 
+  const roomID = useSelector((state) => state.chat.roomId);
+
   return (
     <>
       <MainContainer>
@@ -261,7 +263,9 @@ const Main = () => {
                       key={nicknames.id}
                       onClick={(e) => {
                         dispatch(addChatroom(nicknames.id));
-                        navigate(`chatroom/${nicknames.id}`);
+                      }}
+                      onDoubleClick={() => {
+                        navigate(`chatroom/${roomID}`);
                       }}
                     >
                       <ImageContainer>

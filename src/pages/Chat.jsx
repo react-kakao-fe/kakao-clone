@@ -42,6 +42,7 @@ const Chat = () => {
   }, []);
 
   const chatRoomList = useSelector((state) => state.chat.chatRoom);
+  console.log(chatRoomList);
 
   // lodash 검색기능
   const searchFriendName = friendInfo.filter((friend) => {
@@ -205,7 +206,7 @@ const Chat = () => {
                 return (
                   <ChatList
                     key={chatRoom.id}
-                    chatRoomId={chatRoom.chatRoomId}
+                    chatRoomId={chatRoom.id}
                     chatRoomName={chatRoom.chatRoomName}
                     lastContent={chatRoom.lastContent}
                     lastChatTime={chatRoom.lastChatTime}

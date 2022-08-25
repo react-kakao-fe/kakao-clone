@@ -169,6 +169,7 @@ const MainContainer = styled.div`
   flex-wrap: warp;
   align-items: center;
   justify-content: center;
+  background-color: white;
   box-shadow: 2px 2px 2px 2px #cacaca;
 `;
 

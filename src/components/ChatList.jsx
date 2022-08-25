@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const ChatWrap = styled.div`
   width: 100%;
@@ -41,10 +42,16 @@ const ChatTimeBox = styled.div`
 `;
 
 function ChatList({ chatRoomId, lastChatTime, chatRoomName, lastContent }) {
+  const navigate = useNavigate();
+  console.log(chatRoomId);
   return (
     <>
       <ChatWrap>
-        <ChatContainer>
+        <ChatContainer
+          onClick={() => {
+            navigate(`/chatroom/${chatRoomId}`);
+          }}
+        >
           <img src="https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049" />
           <ChatBox>
             <p>{chatRoomName}</p>
