@@ -22,6 +22,9 @@ function ChatRoom() {
   const chatList = useSelector((state) => state.chat.chat);
   const userInfo = useSelector((state) => state.myinfo.user.data);
 
+  const roomID = useSelector((state) => state.chat.roomId);
+  console.log(roomID);
+
   //렌더되면 소켓 연결실행
   useEffect(() => {
     onConneted();
@@ -40,11 +43,11 @@ function ChatRoom() {
   }, []);
 
   const handleEnterPress = (e) => {
+    if (message.trim() === "") {
+      e.preventDefault();
+    }
     if (e.keyCode === 13 && e.shiftKey == false) {
       sendMessage();
-    }
-    if (message === "") {
-      e.perventDefault();
     }
   };
 
@@ -103,13 +106,14 @@ function ChatRoom() {
           })}
       </MessageWrapper>
       <MessageFormContainer>
-        <MessageForm type="submit">
+        <MessageForm>
           <textarea
             type="button"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleEnterPress}
           />
+          {console.log(message.length)}
           <ButtonContainer>
             <button onClick={sendMessage}>전송</button>
           </ButtonContainer>
@@ -153,6 +157,9 @@ const MessageForm = styled.form`
     width: 100%;
     height: 100%;
     border: none;
+  }
+  textarea:focus {
+    outline: none;
   }
 `;
 

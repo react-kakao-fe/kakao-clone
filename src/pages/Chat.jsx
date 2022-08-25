@@ -7,13 +7,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { __getPlusUser } from "../_redux/modules/friend_info";
 import { NavLink } from "react-router-dom";
 import _ from "lodash";
+import ChatList from "../components/ChatList";
+import { getChatRoom } from "../_redux/modules/chat_sever";
 
 const Chat = () => {
   const [visible, setVisible] = useState(false);
   const [modal, setModal] = useState(false);
   const [serch, setSerch] = useState("");
-  const chatInfo = useSelector((state) => state.chat.chatList);
-  console.log(chatInfo);
+  const chatRoomList = useSelector((state) => state.chat.chatList);
+
+  console.log(chatRoomList);
 
   const handleModal = () => {
     setModal(!modal);
@@ -22,15 +25,19 @@ const Chat = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getChatRoom());
+  }, []);
+
+  useEffect(() => {
     dispatch(__getPlusUser());
   }, []);
 
   // lodash 검색기능
-  const searchChatdName =
-    chatInfo &&
-    chatInfo.filter((friend) => {
-      return friend.chatRoomName.toLowerCase().includes(serch.toLowerCase());
-    });
+  // const searchChatdName =
+  //   chatRoomList &&
+  //   chatRoomList.filter((friend) => {
+  //     return friend.chatRoomName.toLowerCase().includes(serch.toLowerCase());
+  //   });
 
   const handleSearchDebounce = _.debounce((e) => {
     setSerch(e.target.value);
@@ -122,7 +129,7 @@ const Chat = () => {
                               친구
                             </span>
                           </div>
-                          {searchChatdName &&
+                          {/* {searchChatdName &&
                             searchChatdName.map((chatInfo) => (
                               <FriendList key={chatInfo.id}>
                                 <img
@@ -133,7 +140,7 @@ const Chat = () => {
                                 />
                                 <span>{chatInfo.chatRoomName}</span>
                               </FriendList>
-                            ))}
+                            ))} */}
                         </HeaderChatPlusBodyContainer>
                       </HeaderChatPlusModal>
                     </HeaderChatPlusModalContainer>
@@ -183,26 +190,19 @@ const Chat = () => {
         <ChatBodyContainer>
           <ChatInlineWrapperr>
             {/* 채팅리스트 */}
-            {/* <<ChatWrap> */}
-            {searchChatdName &&
-              searchChatdName.map((list) => {
+            {/* {searchChatdName.map((chatRoom) => {
+              if (!(chatRoom.lastChatTime && chatRoom.lastContent === null)) {
                 return (
-                  <div key={list.id}>
-                    <ChatWrap>
-                      <img
-                        alt=""
-                        src="https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049"
-                      />
-                      <ChatBox>
-                        <span>{list.chatRoomName}</span>
-                        {/* <span>마지막 채팅내용</span> */}
-                      </ChatBox>
-                    </ChatWrap>
-                    <ChatTimeBox>{/* <span>채팅시간</span> */}</ChatTimeBox>
-                  </div>
+                  <ChatList
+                    key={chatRoom.id}
+                    chatRoomId={chatRoom.chatRoomId}
+                    chatRoomName={chatRoom.chatRoomName}
+                    lastContent={chatRoom.lastContent}
+                    lastChatTime={chatRoom.lastChatTime}
+                  />
                 );
-              })}
-            {/* </ChatWrap> searchVal={serch} /> */}
+              }
+            })} */}
           </ChatInlineWrapperr>
         </ChatBodyContainer>
       </ChatContainer>
