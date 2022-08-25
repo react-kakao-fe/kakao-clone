@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { __getUserInfo } from "../_redux/modules/user_info";
-import { __getPlusUser, __postPlusUser } from "../_redux/modules/friend_info";
+import { __postPlusUser } from "../_redux/modules/friend_info";
 import { addChatroom } from "../_redux/modules/chat_sever";
 import { ReactComponent as Search } from "../assets/search.svg";
 import { ReactComponent as PersonPlus } from "../assets/person-plus.svg";
@@ -15,30 +15,21 @@ const Main = () => {
   const [userName, setUserName] = useState("");
   const [searchVal, setSearchVal] = useState("");
   const [chatRoom, setChatRoom] = useState("");
-  const searchRef = useRef(null);
 
   const userInfo = useSelector((state) => state.myinfo.user.data);
   const friendInfo = useSelector((state) => state.friend.userFriend);
+  const chatInfo = useSelector((state) => state.chat.chatList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  console.log(chatInfo);
 
   useEffect(() => {
     dispatch(__getUserInfo());
   }, []);
 
-  useEffect(() => {
-    dispatch(__getPlusUser());
-  }, []);
-
   const plusUserId = () => {
     dispatch(__postPlusUser(userName));
-  };
-
-  const handleDouble = (e) => {
-    if (e.detail === 2) {
-      console.log(chatRoom);
-      setChatRoom(!chatRoom);
-    }
   };
 
   // lodash 친구검색
@@ -58,12 +49,11 @@ const Main = () => {
   };
 
   const handleVisible = () => {
-    searchRef.current.focus();
-    searchRef.current.disabled = false;
     setVisible(!visible);
   };
 
   const handleFormData = (e) => {
+    // dispatch(__getChatRoom(chatInfo.id));
     e.preventDefault();
     plusUserId();
   };
@@ -82,139 +72,127 @@ const Main = () => {
     <>
       <MainContainer>
         <>
-          <div
-            style={{
-              position: "fixed",
-              width: "85%",
-              backgroundColor: "white",
-            }}
-          >
-            <TopIconContainer>
-              <span>‒</span>
-              <span>ㅁ</span>
-              <span>×</span>
-            </TopIconContainer>
-            <HeaderContainer>
-              <span>친구</span>
-              <HeaderIconContainer>
-                <IconContainer>
-                  <SearchIcon onClick={handleVisible} />
-                </IconContainer>
-                <IconContainer>
-                  <PersonPlusIcon onClick={handleModal} />
-                  {modal && (
-                    <>
-                      <HeaderPlusModalContainer>
-                        <HeaderPlusModal>
-                          <HeaderPlusModalCloseButton onClick={handleModal}>
-                            x
-                          </HeaderPlusModalCloseButton>
-                          <HeaderPlusModalSpaneWrapper>
-                            <span
-                              style={{
-                                color: "black",
-                              }}
-                            >
-                              친구 추가
-                            </span>
-                          </HeaderPlusModalSpaneWrapper>
-                          <HeaderPlusBodyContainer>
-                            <span
-                              style={{
-                                color: "black",
-                                fontSize: "14px",
-                                marginLeft: "20px",
-                                fontWeight: "400",
-                              }}
-                            >
-                              ID로 추가
-                            </span>
-                            <hr style={{ width: "100%", opacity: "1" }} />
-                            <HeaderPlusBodyFormContainer>
-                              <HeaderPlusForm onSubmit={handleFormData}>
-                                <input
-                                  type="text"
-                                  placeholder="친구 카카오톡 ID"
-                                  maxLength="20"
-                                  onChange={(e) => setUserName(e.target.value)}
-                                />
-                                <span
-                                  style={{
-                                    fontSize: "14px",
-                                    fontWeight: "400",
-                                    color: "rgba(168, 163, 163, 0.6)",
-                                  }}
-                                >
-                                  {userName.length}/20
-                                </span>
-                              </HeaderPlusForm>
-                            </HeaderPlusBodyFormContainer>
-                            <div
-                              style={{
-                                display: "flex",
-                                padding: "20px",
-                                width: "100%",
-                                alignItems: "flex-start",
-                                justifyContent: "flex-start",
-                              }}
-                            >
+          <TopIconContainer>
+            <span>‒</span>
+            <span>ㅁ</span>
+            <span>×</span>
+          </TopIconContainer>
+          <HeaderContainer>
+            <span>친구</span>
+            <HeaderIconContainer>
+              <IconContainer>
+                <SearchIcon onClick={handleVisible} />
+              </IconContainer>
+              <IconContainer>
+                <PersonPlusIcon onClick={handleModal} />
+                {modal && (
+                  <>
+                    <HeaderPlusModalContainer>
+                      <HeaderPlusModal>
+                        <HeaderPlusModalCloseButton onClick={handleModal}>
+                          x
+                        </HeaderPlusModalCloseButton>
+                        <HeaderPlusModalSpaneWrapper>
+                          <span
+                            style={{
+                              color: "black",
+                            }}
+                          >
+                            친구 추가
+                          </span>
+                        </HeaderPlusModalSpaneWrapper>
+                        <HeaderPlusBodyContainer>
+                          <span
+                            style={{
+                              color: "black",
+                              fontSize: "14px",
+                              marginLeft: "20px",
+                              fontWeight: "400",
+                            }}
+                          >
+                            ID로 추가
+                          </span>
+                          <hr style={{ width: "100%", opacity: "1" }} />
+                          <HeaderPlusBodyFormContainer>
+                            <HeaderPlusForm onSubmit={handleFormData}>
+                              <input
+                                type="text"
+                                placeholder="친구 카카오톡 ID"
+                                maxLength="20"
+                                onChange={(e) => setUserName(e.target.value)}
+                              />
                               <span
                                 style={{
-                                  fontSize: "12px",
+                                  fontSize: "14px",
+                                  fontWeight: "400",
                                   color: "rgba(168, 163, 163, 0.6)",
                                 }}
                               >
-                                카카오톡 ID를 등록하고 검색을 허용한 친구만 찾을
-                                수 있습니다.
+                                {userName.length}/20
                               </span>
-                            </div>
-                          </HeaderPlusBodyContainer>
-                        </HeaderPlusModal>
-                      </HeaderPlusModalContainer>
-                    </>
-                  )}
-                </IconContainer>
-              </HeaderIconContainer>
-            </HeaderContainer>
-            <HeaderInputContainer
+                            </HeaderPlusForm>
+                          </HeaderPlusBodyFormContainer>
+                          <div
+                            style={{
+                              display: "flex",
+                              padding: "20px",
+                              width: "100%",
+                              alignItems: "flex-start",
+                              justifyContent: "flex-start",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                color: "rgba(168, 163, 163, 0.6)",
+                              }}
+                            >
+                              카카오톡 ID를 등록하고 검색을 허용한 친구만 찾을
+                              수 있습니다.
+                            </span>
+                          </div>
+                        </HeaderPlusBodyContainer>
+                      </HeaderPlusModal>
+                    </HeaderPlusModalContainer>
+                  </>
+                )}
+              </IconContainer>
+            </HeaderIconContainer>
+          </HeaderContainer>
+          <HeaderInputContainer
+            style={{
+              display: visible ? "flex" : "none",
+            }}
+          >
+            <SearchIcon
               style={{
-                display: visible ? "flex" : "none",
+                width: "47px",
+                height: "47px",
+                padding: "5px 15px",
+                color: "rgba(168, 163, 163, 0.5)",
+                position: "absolute",
+                zIndex: "1",
+                cursor: "auto",
+              }}
+            />
+
+            <input placeholder="이름 검색" onChange={handleSearchDebounce} />
+            <div
+              style={{
+                right: "0",
+                position: "absolute",
+                display: "flex",
+                alignItems: "center",
+                fontSize: "12px",
+                fontWeight: "bold",
+                borderLeft: "1px solid rgba(168, 163, 163, 1)",
+                paddingRight: "10px",
+                color: "rgba(168, 163, 163, 1)",
               }}
             >
-              <SearchIcon
-                style={{
-                  width: "47px",
-                  height: "47px",
-                  padding: "5px 15px",
-                  color: "rgba(168, 163, 163, 0.5)",
-                  position: "absolute",
-                  zIndex: "1",
-                  cursor: "auto",
-                }}
-              />
-
-              <input
-                placeholder="이름 검색"
-                onChange={handleSearchDebounce}
-                ref={searchRef}
-              />
-              <div
-                style={{
-                  right: "0",
-                  position: "absolute",
-                  display: "flex",
-                  alignItems: "center",
-                  fontSize: "12px",
-                  fontWeight: "bold",
-                  borderLeft: "1px solid rgba(168, 163, 163, 1)",
-                  paddingRight: "10px",
-                  color: "rgba(168, 163, 163, 1)",
-                }}
-              >
-                <span style={{ paddingLeft: "5px" }}>통합검색</span>
-              </div>
-            </HeaderInputContainer>
-          </div>
+              <span style={{ paddingLeft: "5px" }}>통합검색</span>
+            </div>
+          </HeaderInputContainer>
         </>
 
         {/* MainBody 부분 */}
@@ -236,7 +214,12 @@ const Main = () => {
               <span>{userInfo && userInfo.nickname}</span>
             </ImageTitleContainer>
           </MainInlineWrapper>
-          <hr style={{ width: "100%", opacity: "0.3" }} />
+          <div
+            style={{
+              width: "100%",
+              borderBottom: "1px solid rgba(180, 172, 172, 0.5)",
+            }}
+          />
           <MainSearchFriend>
             <div
               style={{
@@ -257,9 +240,10 @@ const Main = () => {
                     <MainInlineWrapper
                       key={nicknames.id}
                       onClick={(e) => {
-                        dispatch(addChatroom(nicknames.id));
-                        navigate(`chatroom/${nicknames.id}`);
-                        // handleDouble(e);
+                        if (e.detail === 2) {
+                          dispatch(addChatroom(nicknames.id));
+                          navigate(`chatroom/${chatInfo.id}`);
+                        }
                       }}
                     >
                       <ImageContainer>
@@ -349,7 +333,7 @@ const HeaderPlusModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
+  z-index: 3;
 `;
 
 const HeaderPlusModal = styled.div`
@@ -483,7 +467,7 @@ const ChatInputFrom = styled.form`
 
 const HeaderInputContainer = styled.div`
   margin: 10px;
-  display: flex;
+  display: block;
   align-items: center;
   position: relative;
   padding: 20px 0;
@@ -531,7 +515,6 @@ const MainContainer = styled.div`
   overflow-y: scroll;
 `;
 const MainInlineContainer = styled.div`
-  margin-top: 100px;
   padding: 15px;
 `;
 
@@ -564,8 +547,6 @@ const ImageTitleContainer = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  width: 40px;
-  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;

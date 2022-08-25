@@ -7,6 +7,7 @@ import Friend from "../components/Chat/Friend";
 import Me from "../components/Chat/Me";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import styled from "styled-components";
 
 function ChatRoom() {
   //기본설정---헤더, 토큰, 주소설정
@@ -15,8 +16,11 @@ function ChatRoom() {
   const headers = {
     Authorization: window.localStorage.getItem("authorization"),
   };
-  const socket = new SockJS("http://54.180.79.105/socket");
+  const socket = new SockJS(`${process.env.REACT_APP_BASE_URL}/socket`);
   const client = Stomp.over(socket);
+
+  const chatList = useSelector((state) => state.chat.chat);
+  const userInfo = useSelector((state) => state.myinfo.user.data);
 
   //렌더되면 소켓 연결실행
   useEffect(() => {
@@ -30,13 +34,19 @@ function ChatRoom() {
   useEffect(() => {
     dispatch(loadMessage());
   }, []);
-  const chatList = useSelector((state) => state.chat.chat);
 
-  //유저인포에서 내 정보 가져오기
   useEffect(() => {
     dispatch(__getUserInfo());
   }, []);
-  const userInfo = useSelector((state) => state.myinfo.user.data);
+
+  const handleEnterPress = (e) => {
+    if (e.keyCode === 13 && e.shiftKey == false) {
+      sendMessage();
+    }
+    if (message === "") {
+      e.perventDefault();
+    }
+  };
 
   //연결&구독
   function onConneted() {
@@ -51,9 +61,7 @@ function ChatRoom() {
           headers
         );
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   //메시지 보내기
@@ -69,32 +77,97 @@ function ChatRoom() {
   };
 
   return (
-    <div>
-      {chatList
-        .slice(0)
-        .reverse()
-        .map((chat) => {
-          if (chat.memberId === userInfo?.id) {
-            return (
-              <div key={chat.createdAt}>
-                <Me content={chat.content} />
-              </div>
-            );
-          } else {
-            return (
-              <div key={chat.createdAt}>
+    <MessageContainer>
+      <MessageWrapper>
+        {chatList &&
+          chatList.map((chat) => {
+            if (chat.memberId === userInfo?.id) {
+              return (
+                <div
+                  style={{
+                    height: "100%",
+                  }}
+                >
+                  <Me content={chat.content} />
+                </div>
+              );
+            } else {
+              return (
                 <Friend
                   content={chat.content}
                   nickname={chat.nickname}
                   imgUrl={chat.imgUrl}
                 />
-              </div>
-            );
-          }
-        })}
-      <input value={message} onChange={(e) => setMessage(e.target.value)} />
-      <button onClick={sendMessage}>버튼입니다</button>
-    </div>
+              );
+            }
+          })}
+      </MessageWrapper>
+      <MessageFormContainer>
+        <MessageForm type="submit">
+          <textarea
+            type="button"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleEnterPress}
+          />
+          <ButtonContainer>
+            <button onClick={sendMessage}>전송</button>
+          </ButtonContainer>
+        </MessageForm>
+      </MessageFormContainer>
+    </MessageContainer>
   );
 }
+
+const MessageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const MessageWrapper = styled.div`
+  flex: 4;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  padding: 10px;
+  flex-direction: column-reverse;
+  background-color: #b2c7d9;
+`;
+
+const MessageFormContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  background-color: white;
+`;
+
+const MessageForm = styled.form`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  textarea {
+    resize: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex: 3;
+  padding-top: 20px;
+  justify-content: center;
+  padding-right: 10px;
+  button {
+    width: 50px;
+    height: 30px;
+  }
+`;
+
 export default ChatRoom;

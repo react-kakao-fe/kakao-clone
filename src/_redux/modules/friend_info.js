@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-const BASE_URL = "http://54.180.79.105";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const accessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
@@ -24,7 +25,6 @@ export const __postPlusUser = createAsyncThunk(
       if (response.status === 200) {
         window.location.reload();
       }
-      console.log(response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       if (error) {

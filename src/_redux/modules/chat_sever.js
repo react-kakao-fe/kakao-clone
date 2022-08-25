@@ -1,15 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://54.180.79.105";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+const acessToken = localStorage.getItem("authorization");
+
 const accessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
-
-const initialState = {
-  chat: [],
-  isLoading: false,
-  error: null,
-};
 
 //채팅방 생성
 export const addChatroom = createAsyncThunk(
@@ -17,8 +13,9 @@ export const addChatroom = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `/api/chatRooms/friend/${payload}`,
-        null,
+        `${BASE_URL}/api/chatRooms/friend/${payload}`,
+        payload,
+
         {
           headers: {
             contentType: "application/json",
@@ -29,7 +26,6 @@ export const addChatroom = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error.response.data);
     }
   }
@@ -40,7 +36,7 @@ export const loadMessage = createAsyncThunk(
   "get/chat",
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/room/4`, {
+      const response = await axios.get(`${BASE_URL}/api/room/4`, {
         headers: {
           contentType: "application/json",
           authorization: accessToken,
@@ -55,6 +51,13 @@ export const loadMessage = createAsyncThunk(
     }
   }
 );
+
+const initialState = {
+  chat: [],
+  chatList: [],
+  isLoading: false,
+  error: null,
+};
 
 export const preChatSlice = createSlice({
   name: "chat",
