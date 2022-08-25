@@ -40,12 +40,15 @@ export const __getPlusUser = createAsyncThunk(
   "user/getPlusUser",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/members/friends`, {
-        headers: {
-          authorization: accessToken,
-          "refresh-token": refreshToken,
-        },
-      });
+      const response = await axios.get(
+        `http://3.34.4.242/api/members/friends`,
+        {
+          headers: {
+            authorization: accessToken,
+            "refresh-token": refreshToken,
+          },
+        }
+      );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.fulfillWithValue(error);

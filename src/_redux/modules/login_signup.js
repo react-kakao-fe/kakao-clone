@@ -13,7 +13,6 @@ const initialState = {
 export const signUp = createAsyncThunk(
   "users/signup",
   async (payload, { rejectWithValue }) => {
-    console.log(payload);
     try {
       const response = await axios.post(`${BASE_URL}/api/members/signup`, {
         username: payload.username,
@@ -22,11 +21,9 @@ export const signUp = createAsyncThunk(
         imgUrl:
           "https://firebasestorage.googleapis.com/v0/b/test-12a64.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=5fcde518-3706-4b4b-b2df-fe1efbc13049",
       });
-      console.log(response);
       window.location.replace("/login");
       return response.data;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error.response.data);
     }
   }
@@ -59,9 +56,7 @@ export const login = createAsyncThunk(
     try {
       const response = await axios
         .post(`${BASE_URL}/api/members/login`, payload)
-
         .then((response) => {
-          console.log(response);
           window.localStorage.setItem(
             "authorization",
             response.headers.authorization
@@ -95,7 +90,6 @@ export const loginSlice = createSlice({
       state.loading = false;
       state.success = true;
       state.user = payload;
-      console.log(payload);
     },
     [login.rejected]: (state, { payload }) => {
       state.loading = false;

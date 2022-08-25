@@ -4,19 +4,30 @@ import { ReactComponent as Search } from "../assets/search.svg";
 import { ReactComponent as ChatDots } from "../assets/chat-dots.svg";
 import { ReactComponent as ChatPlus } from "../assets/chat-plus-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { __getPlusUser } from "../_redux/modules/friend_info";
-import { NavLink } from "react-router-dom";
-import _ from "lodash";
 import ChatList from "../components/ChatList";
+import { __getPlusUser } from "../_redux/modules/friend_info";
+import { NavLink, useNavigate } from "react-router-dom";
+import _ from "lodash";
 import { getChatRoom } from "../_redux/modules/chat_sever";
+
+const ChatContainer = styled.div`
+  width: 100%;
+`;
+
+const ChatHeaderContainer = styled.div`
+  padding: 15px;
+`;
+
+const ChatInlineWrapperr = styled.div``;
 
 const Chat = () => {
   const [visible, setVisible] = useState(false);
   const [modal, setModal] = useState(false);
   const [serch, setSerch] = useState("");
-  const chatRoomList = useSelector((state) => state.chat.chatList);
+  const friendInfo = useSelector((state) => state.friend.userFriend);
+  const roomID = useSelector((state) => state.chat.roomId);
 
-  console.log(chatRoomList);
+  const navigate = useNavigate();
 
   const handleModal = () => {
     setModal(!modal);
@@ -25,23 +36,28 @@ const Chat = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getChatRoom());
-  }, []);
-
-  useEffect(() => {
     dispatch(__getPlusUser());
   }, []);
 
+  //채팅방 목록 불러오기
+  useEffect(() => {
+    dispatch(getChatRoom());
+  }, []);
+
+  const searchFriendName = friendInfo.filter((friend) => {
+    return friend.nickname.toLowerCase().includes(serch.toLowerCase());
+  });
+
+  const chatRoomList = useSelector((state) => state.chat.chatRoom);
+
   // lodash 검색기능
-  // const searchChatdName =
-  //   chatRoomList &&
-  //   chatRoomList.filter((friend) => {
-  //     return friend.chatRoomName.toLowerCase().includes(serch.toLowerCase());
-  //   });
+  const searchChatName = chatRoomList.filter((friend) => {
+    return friend.chatRoomName.toLowerCase().includes(serch.toLowerCase());
+  });
 
   const handleSearchDebounce = _.debounce((e) => {
     setSerch(e.target.value);
-  }, 200);
+  }, 300);
 
   return (
     <>
@@ -103,10 +119,11 @@ const Chat = () => {
                                   position: "absolute",
                                   zIndex: "1",
                                   cursor: "auto",
+                                  // backgroundColor: "red",
                                 }}
                               />
                               <input
-                                placeholder="채팅방 검색"
+                                placeholder="이름 검색"
                                 onChange={handleSearchDebounce}
                               />
                             </HeaderChatPlusInputContainer>
@@ -129,18 +146,18 @@ const Chat = () => {
                               친구
                             </span>
                           </div>
-                          {/* {searchChatdName &&
-                            searchChatdName.map((chatInfo) => (
-                              <FriendList key={chatInfo.id}>
+                          {searchFriendName &&
+                            searchFriendName.map((friend) => (
+                              <FriendList key={friend.id}>
                                 <img
-                                  src={chatInfo.imgUrl}
+                                  src={friend.imgUrl}
                                   alt=""
                                   width="30px"
                                   height="30px"
                                 />
-                                <span>{chatInfo.chatRoomName}</span>
+                                <span>{friend.nickname}</span>
                               </FriendList>
-                            ))} */}
+                            ))}
                         </HeaderChatPlusBodyContainer>
                       </HeaderChatPlusModal>
                     </HeaderChatPlusModalContainer>
@@ -185,36 +202,33 @@ const Chat = () => {
             </div>
           </HeaderInputContainer>
         </>
-
         {/* ChatBody */}
-        <ChatBodyContainer>
+        <ChatHeaderContainer>
           <ChatInlineWrapperr>
-            {/* 채팅리스트 */}
-            {/* {searchChatdName.map((chatRoom) => {
-              if (!(chatRoom.lastChatTime && chatRoom.lastContent === null)) {
-                return (
-                  <ChatList
-                    key={chatRoom.id}
-                    chatRoomId={chatRoom.chatRoomId}
-                    chatRoomName={chatRoom.chatRoomName}
-                    lastContent={chatRoom.lastContent}
-                    lastChatTime={chatRoom.lastChatTime}
-                  />
-                );
-              }
-            })} */}
+            {searchChatName &&
+              searchChatName.map((chatRoom) => {
+                if (!(chatRoom.lastChatTime && chatRoom.lastContent === null)) {
+                  return (
+                    <ChatList
+                      onDoubleClick={() => {
+                        navigate(`chatroom/${roomID}`);
+                      }}
+                      key={chatRoom.id}
+                      chatRoomId={chatRoom.id}
+                      chatRoomName={chatRoom.chatRoomName}
+                      lastContent={chatRoom.lastContent}
+                      lastChatTime={chatRoom.lastChatTime}
+                    ></ChatList>
+                  );
+                }
+              })}
           </ChatInlineWrapperr>
-        </ChatBodyContainer>
+        </ChatHeaderContainer>
       </ChatContainer>
     </>
   );
 };
 
-const ChatContainer = styled.div`
-  width: 100%;
-`;
-
-// HeaderComponent
 const HeaderContainer = styled.div`
   width: 100%;
   display: flex;
@@ -336,13 +350,8 @@ const HeaderChatPlusInputContainer = styled.div`
     }
   }
 `;
-// 여기까지
 
-const ChatBodyContainer = styled.div`
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-`;
+// 여기까지
 
 const HeaderInputContainer = styled.div`
   margin: 10px;
@@ -409,45 +418,6 @@ const ChatPlusIcon = styled(ChatPlus)`
   height: 23px;
   color: black;
   cursor: pointer;
-`;
-
-// chatList
-const ChatWrap = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  margin-bottom: 20px;
-  img {
-    width: 35px;
-    height: 35px;
-    border-radius: 10px;
-  }
-`;
-
-const ChatInlineWrapperr = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const ChatBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  span {
-    font-size: 14px;
-  }
-  p {
-    font-weight: bold;
-    font-size: 14px;
-  }
-`;
-
-const ChatTimeBox = styled.div`
-  span {
-    font-size: 14px;
-  }
 `;
 
 export default Chat;

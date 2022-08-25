@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { loadMessage } from "../_redux/modules/chat_sever";
 import { addMessage } from "../_redux/modules/chat_sever";
 import { __getUserInfo } from "../_redux/modules/user_info";
@@ -22,8 +23,7 @@ function ChatRoom() {
   const chatList = useSelector((state) => state.chat.chat);
   const userInfo = useSelector((state) => state.myinfo.user.data);
 
-  const roomID = useSelector((state) => state.chat.roomId);
-  console.log(roomID);
+  const roomId = useParams();
 
   //렌더되면 소켓 연결실행
   useEffect(() => {
@@ -35,7 +35,7 @@ function ChatRoom() {
 
   //axios로 데이터 불러오는 용
   useEffect(() => {
-    dispatch(loadMessage());
+    dispatch(loadMessage(roomId.id));
   }, []);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ function ChatRoom() {
     try {
       client.connect(headers, () => {
         client.subscribe(
-          `/sub/channel/4`,
+          `/sub/channel/${roomId.id}`,
           (data) => {
             const newMessage = JSON.parse(data.body);
             dispatch(addMessage(newMessage));
@@ -70,7 +70,7 @@ function ChatRoom() {
   //메시지 보내기
   const sendMessage = () => {
     client.send(
-      `/pub/message/4`,
+      `/pub/message/${roomId.id}`,
       headers,
       JSON.stringify({
         content: message,
@@ -90,17 +90,21 @@ function ChatRoom() {
                   style={{
                     height: "100%",
                   }}
+                  key={chat.createdAt}
                 >
                   <Me content={chat.content} />
                 </div>
               );
             } else {
               return (
-                <Friend
-                  content={chat.content}
-                  nickname={chat.nickname}
-                  imgUrl={chat.imgUrl}
-                />
+                <div key={chat.createdAt}>
+                  <Friend
+                    key={chat.createdAt}
+                    content={chat.content}
+                    nickname={chat.nickname}
+                    imgUrl={chat.imgUrl}
+                  />
+                </div>
               );
             }
           })}
@@ -113,7 +117,6 @@ function ChatRoom() {
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleEnterPress}
           />
-          {console.log(message.length)}
           <ButtonContainer>
             <button onClick={sendMessage}>전송</button>
           </ButtonContainer>

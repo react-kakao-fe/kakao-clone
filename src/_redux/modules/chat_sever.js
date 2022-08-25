@@ -22,7 +22,7 @@ export const addChatroom = createAsyncThunk(
           },
         }
       );
-      return response.data;
+      return response.data.data.roomId;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -34,17 +34,15 @@ export const loadMessage = createAsyncThunk(
   "get/chat",
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/room/4`, {
+      const response = await axios.get(`${BASE_URL}/api/room/${payload}`, {
         headers: {
           contentType: "application/json",
           authorization: accessToken,
           "refresh-token": refreshToken,
         },
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error.response.data);
     }
   }
@@ -64,15 +62,15 @@ export const getChatRoom = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error.response.data);
     }
   }
 );
 
 const initialState = {
+  roomId: "",
+  chatRoom: [],
   chat: [],
-  chatList: [],
   isLoading: false,
   error: null,
 };
@@ -86,21 +84,17 @@ export const preChatSlice = createSlice({
     },
   },
   extraReducers: {
-    [addChatroom.pending]: (state) => {
-      state.isLoading = true;
-      state.error = null;
-    },
     [addChatroom.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.success = true;
-    },
-    [addChatroom.rejected]: (state, { payload }) => {
-      state.isLoading = false;
-      state.error = payload;
+      state.roomId = payload;
     },
     [loadMessage.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.chat = payload;
+    },
+    [getChatRoom.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.chatRoom = payload;
     },
   },
 });

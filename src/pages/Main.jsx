@@ -20,8 +20,6 @@ const Main = () => {
   const userInfo = useSelector((state) => state.myinfo.user.data);
   const friendInfo = useSelector((state) => state.friend.userFriend);
 
-  const Info = useSelector((state) => state);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -37,13 +35,6 @@ const Main = () => {
     dispatch(__postPlusUser(userName));
   };
 
-  const handleDouble = (e) => {
-    if (e.detail === 2) {
-      console.log(chatRoom);
-      setChatRoom(!chatRoom);
-    }
-  };
-
   // lodash 친구검색
 
   const searchFriendName =
@@ -54,7 +45,7 @@ const Main = () => {
 
   const handleSearchDebounce = _.debounce((e) => {
     setSearchVal(e.target.value);
-  }, 200);
+  }, 300);
 
   const handleModal = () => {
     setModal(!modal);
@@ -73,13 +64,14 @@ const Main = () => {
 
   // chat
   const handleChatRoomModal = () => {
-    // dispatch(__postChatRoom(friendInfo.id));
     setChatRoom(!chatRoom);
   };
 
   const handleChatFormData = (e) => {
     e.preventDefault();
   };
+
+  const roomID = useSelector((state) => state.chat.roomId);
 
   return (
     <>
@@ -267,7 +259,9 @@ const Main = () => {
                       key={nicknames.id}
                       onClick={(e) => {
                         dispatch(addChatroom(nicknames.id));
-                        navigate(`chatroom/${nicknames.id}`);
+                      }}
+                      onDoubleClick={() => {
+                        navigate(`chatroom/${roomID}`);
                       }}
                     >
                       <ImageContainer>
@@ -301,7 +295,6 @@ const Main = () => {
                     <ChatList>dd</ChatList>
                     <ChatInputFrom onSubmit={handleChatFormData}>
                       <textarea type="text" />
-                      asd
                     </ChatInputFrom>
                   </ChatModalBodyContainer>
                 </ChatModal>

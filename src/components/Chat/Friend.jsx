@@ -17,7 +17,7 @@ function Friend({ content, nickname, imgUrl }) {
             {nickname}
           </span>
           <div className="bubble">
-            <span>{content}</span>
+            <span stlye={{ width: "100%" }}>{content}</span>
           </div>
         </FriendTitleContainer>
       </FriendBox>
@@ -29,14 +29,21 @@ const FriendWrap = styled.div`
   display: flex;
   justify-content: flex-start;
   padding: 4px 10px;
-  align-items: center;
+  align-items: flex-start;
   .bubble {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
     position: relative;
     background: #eee;
     padding: 5px;
     border-radius: 3px;
     margin-left: 10px;
     margin-top: 3px;
+    span {
+      text-align: start;
+    }
   }
   .bubble:after {
     content: "";
@@ -58,7 +65,6 @@ const FriendBox = styled.div`
 
 const FriendTitleContainer = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
   padding-left: 10px;
 `;
