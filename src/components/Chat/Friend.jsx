@@ -33,7 +33,7 @@ const FriendWrap = styled.div`
   .bubble {
     position: relative;
     background: #eee;
-    padding: 2px;
+    padding: 5px;
     border-radius: 3px;
     margin-left: 10px;
     margin-top: 3px;

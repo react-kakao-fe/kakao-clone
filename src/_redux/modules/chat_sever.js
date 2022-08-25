@@ -2,8 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const acessToken = localStorage.getItem("authorization");
-
 const accessToken = localStorage.getItem("authorization");
 const refreshToken = localStorage.getItem("refresh-token");
 
@@ -44,6 +42,26 @@ export const loadMessage = createAsyncThunk(
         },
       });
       console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//채팅방 전체 불러오기
+export const getChatRoom = createAsyncThunk(
+  "get/chatroom",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/chatRooms`, {
+        headers: {
+          contentType: "application/json",
+          authorization: accessToken,
+          "refresh-token": refreshToken,
+        },
+      });
       return response.data;
     } catch (error) {
       console.log(error);
