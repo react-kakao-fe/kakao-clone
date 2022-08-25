@@ -239,7 +239,13 @@ const Main = () => {
               <span>{userInfo && userInfo.nickname}</span>
             </ImageTitleContainer>
           </MainInlineWrapper>
-          <hr style={{ width: "100%", opacity: "0.3" }} />
+          <div
+            style={{
+              border: "1px solid rgba(180, 172, 172, 0.2)",
+              width: "100%",
+              height: "100%",
+            }}
+          ></div>
           <MainSearchFriend>
             <div
               style={{

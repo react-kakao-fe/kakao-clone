@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { ReactComponent as Personfill } from "../assets/person-fill.svg";
 import { ReactComponent as Chatfill } from "../assets/chat-fill.svg";
@@ -168,6 +168,15 @@ const SettingContainer = styled.div`
   padding: 10px;
 `;
 
+const SettingWrapper = styled.div`
+  cursor: pointer;
+  padding: 2px;
+  width: 100%;
+  &:hover {
+    background-color: rgba(168, 163, 163, 0.1);
+  }
+`;
+
 export const Navigation = () => {
   return (
     <>
@@ -204,6 +213,13 @@ export const BottomIcon = () => {
   const [bell, setBell] = useState("");
   const [display, setDisplay] = useState("");
   const [setting, Setsetting] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("authorization");
+    localStorage.removeItem("refresh-token");
+    navigate("/login");
+  };
 
   useEffect(() => {
     <>
@@ -268,10 +284,10 @@ export const BottomIcon = () => {
         {setting && (
           <>
             <SettingContainer>
-              <div>
+              <SettingWrapper>
                 <span>설정</span>
-              </div>
-              <div
+              </SettingWrapper>
+              <SettingWrapper
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -281,8 +297,8 @@ export const BottomIcon = () => {
               >
                 <span>잠금모드</span>
                 <span>Ctrl+L</span>
-              </div>
-              <div
+              </SettingWrapper>
+              <SettingWrapper
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -290,10 +306,10 @@ export const BottomIcon = () => {
                   width: "100%",
                 }}
               >
-                <span>로그아웃</span>
+                <span onClick={handleLogout}>로그아웃</span>
                 <span>Alt+N</span>
-              </div>
-              <div
+              </SettingWrapper>
+              <SettingWrapper
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -303,7 +319,7 @@ export const BottomIcon = () => {
               >
                 <span>종료</span>
                 <span>Alt+X</span>
-              </div>
+              </SettingWrapper>
             </SettingContainer>
           </>
         )}
